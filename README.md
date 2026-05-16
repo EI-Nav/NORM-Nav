@@ -1,20 +1,8 @@
 # NORM-Nav
 
-<p align="center">
-  <a href="ICRA26_2253_FI.pdf">Paper PDF</a> ·
-  <a href="https://ei-nav.github.io/NORM-Nav">Project Website</a> ·
-  <a href="#paper-and-citation">Citation</a> ·
-  <a href="LICENSE">License</a>
-</p>
+[Paper PDF](ICRA26_2253_FI.pdf) · [Project Website](https://ei-nav.github.io/NORM-Nav) · [Citation](#paper-and-citation) · [License](LICENSE)
 
-<p align="center">
-  <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT" />
-  <img src="https://img.shields.io/badge/ROS%202-Humble-22314E.svg" alt="ROS 2 Humble" />
-  <img src="https://img.shields.io/badge/Ubuntu-22.04-E95420.svg" alt="Ubuntu 22.04" />
-  <img src="https://img.shields.io/badge/Gazebo-Classic%2011-FF6F00.svg" alt="Gazebo Classic 11" />
-  <img src="https://img.shields.io/badge/Status-Research%20Preview-yellow.svg" alt="Status: Research Preview" />
-  <img src="https://img.shields.io/badge/Paper-ICRA%202026-success.svg" alt="Paper: ICRA 2026" />
-</p>
+
 
 ---
 
@@ -28,7 +16,6 @@
 - [Installation](#installation)
 - [Quick Start](#quick-start)
 - [Behavioral Instruction Example](#behavioral-instruction-example)
-- [Configuration (pointers)](#configuration-pointers)
 - [Paper and Citation](#paper-and-citation)
 - [Contributing](#contributing)
 - [Acknowledgements](#acknowledgements)
@@ -44,11 +31,10 @@
 
 ## Key Features
 
-- **Natural-language behavioral constraints** parsed into structured fields (object, direction, velocity, traversability); see [`src/human_robot_interaction/navibot_instruction_parsing/README.md`](src/human_robot_interaction/navibot_instruction_parsing/README.md).
-- **Semantic perception** via GroundingDINO + SAM2 ROS 2 node; see [`src/perception/navibot_grounded_sam2/README.md`](src/perception/navibot_grounded_sam2/README.md).
-- **Multi-layer costmaps**: geometric traversability, semantic traversability, directional preferences, velocity modulation, and fusion into behavior-aware maps for planning; see [`src/perception/navibot_costmap/README.md`](src/perception/navibot_costmap/README.md).
-- **Classic stack** (geometry + Nav2 only) and **NORM-Nav stack** (full perception + behavioral layers) via different bringup launches.
-- **Simulation** (Gazebo worlds `SMALL_OSM` / `MEDIUM_OSM` / `LARGE_OSM`) and **real robot** bringup (e.g., Livox MID-360).
+- **Zero-shot instruction grounding:** free-form natural-language behavioral constraints are parsed into structured representations (referent object, spatial relation, velocity profile, traversability) without task-specific training.
+- **Open-vocabulary semantic perception:** referent-level visual grounding and instance segmentation via GroundingDINO and SAM2, integrated as a ROS 2 perception pipeline.
+- **Behavior-aware costmap stack:** a layered formulation that combines geometric traversability, semantic traversability, directional preference fields, and velocity modulation, fused into unified navigation costs for planning.
+- **Sim-to-real evaluation:** unified ROS 2 bringup for Gazebo Classic simulation (multi-scale OSM worlds: `SMALL_OSM`, `MEDIUM_OSM`, `LARGE_OSM`) and real-world platforms with Livox MID-360 LiDAR.
 
 ---
 
@@ -99,6 +85,8 @@ flowchart LR
   Fuse --> Nav --> Cmd
 ```
 
+
+
 ---
 
 ## Repository Layout
@@ -133,12 +121,6 @@ NORM-Nav/
 
 ---
 
-## Implementation Environment
-
-This project is implemented and validated primarily on **Ubuntu 22.04 + ROS 2 Humble**, with **Gazebo Classic 11** for simulation and **Livox MID-360** in real-robot setups; for the full vision-enhanced NORM-Nav pipeline, an RGB-D camera and NVIDIA GPU (CUDA) are typically used.
-
----
-
 ## Installation
 
 ### 1. Clone and submodules
@@ -148,8 +130,6 @@ git clone git@github.com:EI-Nav/NORM-Nav.git
 cd NORM-Nav
 git submodule update --init --recursive
 ```
-
-`FAST_LIO` is a git submodule under `src/localization/FAST_LIO` (see [`.gitmodules`](.gitmodules)).
 
 ### 2. Gazebo models (required for simulation)
 
@@ -178,12 +158,12 @@ cd ../..
 source install/setup.bash
 ```
 
-### 5. Behavioral / vision pipeline (required for NORM-Nav)
+### 5. Behavioral / vision pipeline
 
 Follow package docs for conda/PyTorch and Grounded SAM2 setup:
 
-- [`src/perception/navibot_grounded_sam2/README.md`](src/perception/navibot_grounded_sam2/README.md)
-- [`src/human_robot_interaction/navibot_instruction_parsing/README.md`](src/human_robot_interaction/navibot_instruction_parsing/README.md)
+- `[src/perception/navibot_grounded_sam2/README.md](src/perception/navibot_grounded_sam2/README.md)`
+- `[src/human_robot_interaction/navibot_instruction_parsing/README.md](src/human_robot_interaction/navibot_instruction_parsing/README.md)`
 
 ---
 
@@ -197,8 +177,7 @@ If you will use natural-language instruction parsing, set the API key before lau
 export LLM_API_KEY="<your_api_key>"
 ```
 
-<details>
-<summary><strong>Simulation - NORM-Nav</strong></summary>
+**Simulation - NORM-Nav**
 
 ```bash
 ros2 launch navibot_bringup norm_nav_bringup_sim.launch.py \
@@ -208,10 +187,9 @@ ros2 launch navibot_bringup norm_nav_bringup_sim.launch.py \
     use_sim_time:=True
 ```
 
-</details>
 
-<details>
-<summary><strong>Real robot - NORM-Nav</strong></summary>
+
+**Real robot - NORM-Nav**
 
 ```bash
 ros2 launch navibot_bringup norm_nav_bringup_real.launch.py \
@@ -219,7 +197,7 @@ ros2 launch navibot_bringup norm_nav_bringup_real.launch.py \
     nav_rviz:=True
 ```
 
-</details>
+
 
 **World options (simulation):** `SMALL_OSM`, `MEDIUM_OSM`, `LARGE_OSM`.
 
@@ -260,21 +238,9 @@ ros2 topic pub --once /behavioral_instructions navibot_interfaces/msg/Behavioral
 
 ---
 
-Full ROS 2 topics, services, and parameters: [`src/human_robot_interaction/navibot_instruction_parsing/README.md`](src/human_robot_interaction/navibot_instruction_parsing/README.md).
+Full ROS 2 topics, services, and parameters: `[src/human_robot_interaction/navibot_instruction_parsing/README.md](src/human_robot_interaction/navibot_instruction_parsing/README.md)`.
 
-Message definitions: [`src/utilities/navibot_interfaces/README.md`](src/utilities/navibot_interfaces/README.md).
-
----
-
-## Configuration (pointers)
-
-| Area                                         | Paths                                                                                                                                                                                                                                                  |
-| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| FAST-LIO2                                    | [`src/navibot_bringup/config/simulation/fastlio_mid360_sim.yaml`](src/navibot_bringup/config/simulation/fastlio_mid360_sim.yaml), [`src/navibot_bringup/config/reality/fastlio_mid360_real.yaml`](src/navibot_bringup/config/reality/fastlio_mid360_real.yaml) |
-| Nav2                                         | [`src/navibot_bringup/config/simulation/nav2_params_sim.yaml`](src/navibot_bringup/config/simulation/nav2_params_sim.yaml), [`src/navibot_bringup/config/reality/nav2_params_real.yaml`](src/navibot_bringup/config/reality/nav2_params_real.yaml) |
-| Classic geometric costmap (package defaults) | [`src/perception/navibot_costmap/config/geometric_traversability_costmap_params.yaml`](src/perception/navibot_costmap/config/geometric_traversability_costmap_params.yaml)                                                                                     |
-| NORM-Nav costmaps (sim)                      | [`src/navibot_bringup/config/simulation/costmap/`](src/navibot_bringup/config/simulation/costmap/)                                                                                                                                                     |
-| NORM-Nav costmaps (real)                     | [`src/navibot_bringup/config/reality/costmap/`](src/navibot_bringup/config/reality/costmap/)                                                                                                                                                           |
+Message definitions: `[src/utilities/navibot_interfaces/README.md](src/utilities/navibot_interfaces/README.md)`.
 
 ---
 
@@ -282,9 +248,7 @@ Message definitions: [`src/utilities/navibot_interfaces/README.md`](src/utilitie
 
 **Title:** NORM-Nav: Zero-Shot Mobile Robot Navigation with Natural Language Behavioral Constraints.
 
-**Project website:** <https://ei-nav.github.io/NORM-Nav>
-
-A manuscript PDF is bundled as [`ICRA26_2253_FI.pdf`](ICRA26_2253_FI.pdf).
+**Project website:** [https://ei-nav.github.io/NORM-Nav](https://ei-nav.github.io/NORM-Nav)
 
 arXiv preprint: coming soon
 
@@ -305,7 +269,7 @@ arXiv preprint: coming soon
 
 ## Contributing
 
-Contributions are welcome via **GitHub Issues** and **pull requests**. For roadmap ideas (extra LiDAR support, richer docs, benchmarks), please use the issue tracker rather than informal TODO lists in this file.
+Contributions are welcome via **GitHub Issues** and **pull requests**.
 
 ---
 
@@ -313,9 +277,9 @@ Contributions are welcome via **GitHub Issues** and **pull requests**. For roadm
 
 This work builds on excellent open-source projects, including:
 
+- [light-map-navigation](https://github.com/EI-Nav/light-map-navigation)
 - [FAST-LIO2](https://github.com/hku-mars/FAST_LIO)
 - [Grounded SAM / SAM2 ecosystem](https://github.com/IDEA-Research/Grounded-SAM-2)
-- [light-map-navigation](https://github.com/EI-Nav/light-map-navigation)
 
 ---
 
