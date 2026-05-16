@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="NORM-Nav: Zero-Shot Mobile Robot Navigation with Natural Language Behavioral Constraints. A framework that integrates natural language behavioral constraints into costmap-based planning without additional training.">
+  <meta name="keywords" content="NORM-Nav, Zero-Shot Navigation, Natural Language, Behavioral Constraints, Mobile Robot, Costmap Planning, ICRA 2026">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NORM-Nav | Project Page</title>
+
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="NORM-Nav: Zero-Shot Mobile Robot Navigation with Natural Language Behavioral Constraints">
+  <meta property="og:description" content="A zero-shot framework that integrates natural language behavioral constraints into costmap-based mobile robot navigation, validated in simulation and the real world.">
+  <meta property="og:image" content="static/images/teaser.svg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="NORM-Nav: Zero-Shot Mobile Robot Navigation with Natural Language Behavioral Constraints">
+  <meta name="twitter:description" content="A zero-shot framework that integrates natural language behavioral constraints into costmap-based mobile robot navigation.">
+  <meta name="twitter:image" content="static/images/teaser.svg">
+
+  <link rel="icon" type="image/x-icon" href="static/images/favicon.ico">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Castoro&family=Google+Sans:wght@400;500;700&family=Noto+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="static/css/index.css">
+
+  <script defer src="static/js/bulma-carousel.min.js"></script>
+  <script defer src="static/js/bulma-slider.min.js"></script>
+  <script defer src="static/js/index.js"></script>
+</head>
+
+<body id="top">
+  <nav class="site-nav" aria-label="Section navigation">
+    <div class="site-nav__inner">
+      <a href="#top" class="site-nav__brand">NORM-Nav</a>
+      <ul class="site-nav__links">
+        <li><a href="#highlights">Highlights</a></li>
+        <li><a href="#abstract">Abstract</a></li>
+        <li><a href="#framework">Framework</a></li>
+        <li><a href="#experiments">Experiments</a></li>
+        <li><a href="#video">Video</a></li>
+        <li><a href="#bibtex">BibTeX</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <section class="hero hero-gradient">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <span class="kicker">Mobile Robot &middot; Social Navigation</span>
+            <h2 class="title is-2 publication-title">NORM-Nav: Zero-Shot Mobile Robot Navigation with Natural Language Behavioral Constraints</h2>
+            <a class="conference-badge" href="https://2026.ieee-icra.org/" target="_blank" rel="noopener">
+              <span>ICRA 2026</span>
+            </a>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block">Dongjie Huo<sup>1*</sup>,</span>
+              <span class="author-block">Junhui Wang<sup>2,3*&Dagger;</sup>,</span>
+              <span class="author-block">Chao Gao<sup>2&dagger;</sup>,</span>
+              <span class="author-block">Yan Qiao<sup>3</sup>,</span>
+              <span class="author-block">Dong Zhang<sup>1</sup>,</span>
+              <span class="author-block">Guyue Zhou<sup>2,4&dagger;</sup></span>
+            </div>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block is-size-6 affiliations">
+                <sup>1</sup> College of Information Science and Technology, Beijing University of Chemical Technology <br>
+                <sup>2</sup> Institute for AI Industry Research (AIR), Tsinghua University <br>
+                <sup>3</sup> Institute of Systems Engineering and Collaborative Laboratory for Intelligent Science and Systems, Macau University of Science and Technology <br>
+                <sup>4</sup> School of Vehicle and Mobility, Tsinghua University
+              </span>
+            </div>
+            <div class="author-notes">
+              <small>
+                <sup>*</sup>Equal contribution.
+                <sup>&dagger;</sup>Corresponding authors.
+                <sup>&Dagger;</sup>Project lead.
+              </small>
+            </div>
+
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="#" class="external-link button is-normal is-rounded is-dark is-disabled" aria-disabled="true" tabindex="-1" title="Coming soon">
+                  <span class="icon"><i class="fas fa-file-pdf" aria-hidden="true"></i></span>
+                  <span>Paper (coming soon)</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="#" class="external-link button is-normal is-rounded is-dark is-disabled" aria-disabled="true" tabindex="-1" title="Coming soon">
+                  <span class="icon"><i class="ai ai-arxiv" aria-hidden="true"></i></span>
+                  <span>arXiv (coming soon)</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="https://github.com/EI-Nav/NORM-Nav" target="_blank" rel="noopener" class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon"><i class="fab fa-github" aria-hidden="true"></i></span>
+                  <span>Code</span>
+                </a>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="highlights">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3 has-text-centered section-title">Highlights</h2>
+          <div class="highlights-grid">
+            <div class="highlight-card fade-in">
+              <div class="highlight-icon"><i class="fas fa-bullseye" aria-hidden="true"></i></div>
+              <h3 class="highlight-title">Zero-Shot Navigation Framework</h3>
+              <p class="highlight-desc">A framework that interprets natural language behavioral constraints and incorporates them into costmap-based planning without requiring additional training.</p>
+            </div>
+            <div class="highlight-card fade-in">
+              <div class="highlight-icon"><i class="fas fa-puzzle-piece" aria-hidden="true"></i></div>
+              <h3 class="highlight-title">Modular Integration</h3>
+              <p class="highlight-desc">Seamlessly integrates with standard costmap-based navigation systems without modifying the underlying planner, supporting flexible adaptation to different behavioral requirements.</p>
+            </div>
+            <div class="highlight-card fade-in">
+              <div class="highlight-icon"><i class="fas fa-flask-vial" aria-hidden="true"></i></div>
+              <h3 class="highlight-title">Comprehensive Evaluation</h3>
+              <p class="highlight-desc">Validated through extensive simulation and real-world experiments, demonstrating improved task success rates and human-like trajectory generation.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section hero is-light" id="abstract">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-four-fifths">
+          <h2 class="title is-3 has-text-centered section-title">Abstract</h2>
+          <div class="content has-text-justified abstract-content fade-in">
+            <p>
+              Mobile robots operating in human-centered environments must generate not only collision-free paths but also trajectories that follow local behavioral conventions. Conventional costmap-based navigation emphasizes geometric feasibility and often overlooks such requirements, which can result in socially inappropriate behaviors. This paper presents NORM-Nav, a zero-shot framework that integrates natural language behavioral constraints into costmap-based planning. An LLM parses each instruction into structured constraints and grounds them using real-time vision&ndash;LiDAR perception. These constraints are encoded as multi-layer costmaps that represent geometric, semantic, directional, and velocity cues and are directly compatible with standard grid-based planners. Simulation and real-world experiments indicate that NORM-Nav improves task success rates and produces trajectories closer to human references than representative baselines.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="hero is-small" id="teaser">
+    <div class="hero-body">
+      <div class="container">
+        <h2 class="title is-3 has-text-centered section-title">Behavioral Constraints Navigation</h2>
+        <div class="image-container fade-in">
+          <img src="static/images/teaser.svg" referrerpolicy="no-referrer"
+               alt="Three navigation examples under language constraints: (a) the robot adjusts its speed, (b) it traverses a perceptually detected curtain, and (c) it bypasses a manhole cover from the left side. Blue lines show executed trajectories, red lines show human reference paths.">
+        </div>
+        <p class="image-caption"><strong>Examples of robot navigation under natural language behavioral constraints.</strong>
+        The blue line indicates the executed trajectory, while the red line shows a human-preferred reference path. The robot is able to (a) adjust its speed while complying with behavioral constraints, (b) traverse perceptually detected but traversable obstacles such as curtains, and (c) comply with side-specific instructions, such as bypassing a manhole cover from the left even though it is physically traversable.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="hero is-small section-accent" id="framework">
+    <div class="hero-body">
+      <div class="container">
+        <h2 class="title is-3 has-text-centered section-title">System Framework</h2>
+        <div class="image-container fade-in">
+          <img src="static/images/framework.svg" referrerpolicy="no-referrer"
+               alt="NORM-Nav system architecture diagram: a large language model parses natural language instructions, a vision-LiDAR module grounds them in the scene, and the parsed constraints are encoded into multi-layer costmaps that feed a standard grid-based motion planner.">
+        </div>
+        <p class="image-caption">
+          <strong>The architecture of the proposed method for zero-shot navigation under natural language behavioral constraints.</strong>
+          The system integrates LLMs with vision-LiDAR perception and encodes parsed behavioral instructions into multi-layer costmaps for motion planning.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="hero is-small" id="experiments">
+    <div class="hero-body">
+      <div class="container">
+        <h2 class="title is-3 has-text-centered section-title">Simulation Experiments</h2>
+        <div class="image-container fade-in">
+          <img src="static/images/sim_exper.svg" referrerpolicy="no-referrer"
+               alt="Simulation results on three representative navigation tasks, comparing trajectories generated by NORM-Nav against several baselines and a human-operated reference path.">
+        </div>
+        <p class="image-caption"><strong>Simulation results on three representative navigation tasks.</strong> The proposed method produces stable trajectories that closely follow human-operated reference paths, outperforming baseline approaches.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="hero is-small is-light" id="real-experiments">
+    <div class="hero-body">
+      <div class="container">
+        <h2 class="title is-3 has-text-centered section-title">Real-World Experiments</h2>
+        <div class="image-container fade-in">
+          <img src="static/images/real_exper.svg" referrerpolicy="no-referrer"
+               alt="Real-world demonstrations: the robot follows natural language behavioral instructions without collisions and produces trajectories that closely match human-operated reference paths.">
+        </div>
+        <p class="image-caption"><strong>Real-world demonstrations of behavior-constrained navigation.</strong> The proposed method successfully follows natural language instructions without collisions, generating stable trajectories that remain close to human-operated reference paths.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="hero teaser" id="video">
+    <div class="container is-max-desktop">
+      <div class="hero-body" style="text-align: center;">
+        <h2 class="title is-3 section-title">Experimental Video</h2>
+        <div class="video-wrapper">
+          <video id="experimentalVideo" poster="" autoplay controls muted loop playsinline
+                 aria-label="Experimental video demonstrating NORM-Nav navigation behavior in real-world and simulation scenarios.">
+            <source src="static/video/ICRA26_2253_VI_i.mp4" type="video/mp4">
+            Your browser does not support the HTML5 video tag.
+          </video>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="bibtex">
+    <div class="container is-max-desktop content">
+      <h2 class="title is-3 has-text-centered section-title">BibTeX</h2>
+      <p>If you find our work useful in your research, please consider citing:</p>
+      <div class="bibtex-wrapper">
+        <button class="copy-btn" type="button" data-target="bibtex-code" aria-label="Copy BibTeX citation to clipboard">
+          <i class="fas fa-copy" aria-hidden="true"></i>
+          <span>Copy</span>
+        </button>
+        <pre id="bibtex-code" tabindex="0"><code>@inproceedings{huo2026normnav,
+  title={NORM-Nav: Zero-Shot Mobile Robot Navigation with Natural Language Behavioral Constraints},
+  author={Dongjie Huo and Junhui Wang and Chao Gao and Yan Qiao and Dong Zhang and Guyue Zhou},
+  booktitle={Proc. IEEE Int. Conf. Robot. Autom. (ICRA)},
+  year={2026}
+}</code></pre>
+      </div>
+    </div>
+  </section>
+
+
+  <button class="back-to-top" type="button" aria-label="Back to top">
+    <i class="fas fa-arrow-up" aria-hidden="true"></i>
+  </button>
+</body>
+
+</html>

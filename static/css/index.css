@@ -1,0 +1,656 @@
+/* ============================================
+   Base & Typography
+   ============================================ */
+body {
+  font-family: 'Noto Sans', sans-serif;
+  padding-top: 56px;
+}
+
+.dnerf {
+  font-variant: small-caps;
+}
+
+.teaser {
+  font-family: 'Google Sans', sans-serif;
+}
+
+.teaser .hero-body {
+  padding-top: 0;
+  padding-bottom: 3rem;
+}
+
+.publication-title,
+.publication-authors {
+  font-family: 'Google Sans', sans-serif;
+}
+
+.publication-venue {
+  color: #555;
+  width: fit-content;
+  font-weight: bold;
+}
+
+.publication-awards {
+  color: #ff3860;
+  width: fit-content;
+  font-weight: bolder;
+}
+
+.publication-authors a {
+  color: hsl(204, 86%, 53%) !important;
+}
+
+.publication-authors a:hover {
+  text-decoration: underline;
+}
+
+.author-block {
+  display: inline-block;
+}
+
+.publication-video {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%;
+  overflow: hidden;
+  border-radius: 10px !important;
+}
+
+.publication-video iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.results-carousel {
+  overflow: hidden;
+}
+
+.results-carousel .item {
+  margin: 5px;
+  overflow: hidden;
+  padding: 20px;
+  font-size: 0;
+}
+
+.results-carousel video {
+  margin: 0;
+}
+
+.slider-pagination .slider-page {
+  background: #000000;
+}
+
+.eql-cntrb {
+  font-size: smaller;
+}
+
+.footer .icon-link {
+  font-size: 25px;
+  color: #000;
+}
+
+.link-block a {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+/* Smooth scroll, but respect users who prefer reduced motion */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* ============================================
+   Layout helpers
+   ============================================ */
+.container {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Keep section headings clear of the sticky nav when jumping to anchors */
+section[id],
+div[id] {
+  scroll-margin-top: 70px;
+}
+
+/* ============================================
+   Sticky site navigation
+   ============================================ */
+.site-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  background: rgba(255, 255, 255, 0.92);
+  -webkit-backdrop-filter: saturate(180%) blur(12px);
+  backdrop-filter: saturate(180%) blur(12px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  z-index: 40;
+  display: flex;
+  align-items: center;
+}
+
+.site-nav__inner {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.site-nav__brand {
+  font-family: 'Google Sans', sans-serif;
+  font-weight: 700;
+  color: #363636;
+  text-decoration: none;
+  letter-spacing: 0.02em;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  transition: color 0.2s ease;
+}
+
+.site-nav__brand:hover {
+  color: #667eea;
+}
+
+.site-nav__links {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.site-nav__links::-webkit-scrollbar {
+  display: none;
+}
+
+.site-nav__links a {
+  display: inline-block;
+  padding: 6px 12px;
+  color: #4a4a4a;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: background 0.2s ease, color 0.2s ease;
+  white-space: nowrap;
+}
+
+.site-nav__links a:hover,
+.site-nav__links a:focus-visible {
+  background: rgba(102, 126, 234, 0.1);
+  color: #667eea;
+  outline: none;
+}
+
+/* ============================================
+   Hero / Title section
+   ============================================ */
+.hero-gradient {
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.hero-gradient .hero-body {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+.kicker {
+  display: inline-block;
+  padding: 4px 14px;
+  margin-bottom: 0.75rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #5563d6;
+  background: rgba(102, 126, 234, 0.12);
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+.affiliations {
+  display: block;
+  margin-top: 1rem;
+}
+
+.author-notes {
+  display: block;
+  margin-top: 0.75rem;
+  color: #6b7280;
+  line-height: 1.6;
+}
+
+.author-notes small {
+  font-size: 0.85em;
+}
+
+/* ============================================
+   Conference badge & buttons
+   ============================================ */
+.conference-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 8px 20px;
+  border-radius: 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 1rem 0 1.5rem 0;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+  text-decoration: none;
+}
+
+.conference-badge:hover,
+.conference-badge:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+  color: white;
+  outline: none;
+}
+
+.external-link.button {
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.external-link.button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  border-color: #667eea;
+}
+
+.external-link.button.is-disabled,
+.external-link.button[aria-disabled="true"] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ============================================
+   Highlights cards
+   ============================================ */
+.highlights-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.highlight-card {
+  background: white;
+  padding: 2rem 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: center;
+}
+
+.highlight-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.highlight-icon {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #667eea;
+}
+
+.highlight-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #363636;
+  margin-bottom: 0.8rem;
+}
+
+.highlight-desc {
+  font-size: 0.95rem;
+  color: #666;
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* ============================================
+   Section titles & background rhythm
+   ============================================ */
+.section-title {
+  position: relative;
+  text-align: center;
+}
+
+.section-title::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+  margin: 1rem auto 1.5rem;
+  border-radius: 2px;
+}
+
+.section-accent {
+  background: linear-gradient(180deg, #f5f3ff 0%, #ffffff 100%);
+}
+
+/* ============================================
+   Abstract block
+   ============================================ */
+.abstract-content {
+  background: #f8f9fa;
+  padding: 2rem;
+  border-radius: 10px;
+  border-left: 4px solid #667eea;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.abstract-content p {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: #4a4a4a;
+}
+
+/* ============================================
+   Image & Video containers
+   ============================================ */
+.image-container {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin: 0 auto 1.5rem;
+  text-align: center;
+  max-width: 1100px;
+}
+
+.image-container img {
+  border-radius: 8px;
+  max-width: 100%;
+  width: 100%;
+  height: auto;
+}
+
+.image-caption {
+  color: #666;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  text-align: left;
+  margin: 0 auto;
+  max-width: 1100px;
+  padding: 0 1rem;
+}
+
+.video-wrapper {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.video-wrapper video {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  background: #000;
+}
+
+/* ============================================
+   BibTeX block with copy button
+   ============================================ */
+.bibtex-wrapper {
+  position: relative;
+}
+
+.bibtex-wrapper pre {
+  padding-right: 110px;
+}
+
+.copy-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 6px 12px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: white;
+  color: #4a4a4a;
+  font-size: 0.85rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+  font-family: inherit;
+}
+
+.copy-btn:hover,
+.copy-btn:focus-visible {
+  border-color: #667eea;
+  color: #667eea;
+  outline: none;
+}
+
+.copy-btn.is-copied {
+  background: #667eea;
+  border-color: #667eea;
+  color: white;
+}
+
+/* ============================================
+   Footer
+   ============================================ */
+.footer {
+  background-color: #f5f7fa;
+  padding: 2rem 1.5rem;
+  margin-top: 3rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.footer p {
+  margin-bottom: 0.5rem;
+  color: #4a4a4a;
+}
+
+.footer a {
+  color: #667eea;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer a:hover {
+  color: #764ba2;
+  text-decoration: underline;
+}
+
+/* ============================================
+   Floating back-to-top button
+   ============================================ */
+.back-to-top {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: #667eea;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  transition: opacity 0.25s ease, transform 0.25s ease, background 0.2s ease;
+  z-index: 30;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-to-top.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.back-to-top:hover,
+.back-to-top:focus-visible {
+  background: #5563d6;
+  outline: none;
+}
+
+/* ============================================
+   Fade-in animation
+   ============================================ */
+.fade-in {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-in.not-visible {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-in,
+  .fade-in.not-visible,
+  .fade-in.visible,
+  .highlight-card,
+  .conference-badge,
+  .external-link.button,
+  .back-to-top {
+    transition: none !important;
+    transform: none !important;
+  }
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+@media screen and (min-width: 769px) {
+  .container {
+    max-width: 1200px;
+  }
+
+  .publication-title {
+    font-size: 2rem;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  body {
+    padding-top: 52px;
+  }
+
+  .site-nav {
+    height: 52px;
+  }
+
+  .site-nav__brand {
+    font-size: 0.85rem;
+  }
+
+  .site-nav__links a {
+    padding: 6px 10px;
+    font-size: 0.85rem;
+  }
+
+  .hero-gradient .hero-body {
+    padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
+  }
+
+  .publication-title {
+    font-size: 1.5rem !important;
+    line-height: 1.4;
+  }
+
+  .publication-authors {
+    font-size: 0.9rem !important;
+  }
+
+  .author-block {
+    display: inline-block;
+    margin-bottom: 5px;
+  }
+
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 14px;
+  }
+
+  .hero-body {
+    padding: 2rem 1rem;
+  }
+
+  .highlights-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .conference-badge {
+    font-size: 0.9rem;
+    padding: 6px 16px;
+  }
+
+  .abstract-content {
+    padding: 1.5rem;
+  }
+
+  .abstract-content p {
+    font-size: 1rem;
+  }
+
+  .image-container {
+    padding: 1rem;
+  }
+
+  .image-caption {
+    font-size: 0.9rem;
+  }
+
+  .bibtex-wrapper pre {
+    padding-right: 1rem;
+    padding-top: 3rem;
+  }
+
+  .copy-btn {
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+
+  .back-to-top {
+    right: 16px;
+    bottom: 16px;
+  }
+}
