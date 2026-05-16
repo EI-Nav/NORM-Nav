@@ -28,7 +28,6 @@
 - [Paper and Citation](#paper-and-citation)
 - [Contributing](#contributing)
 - [Acknowledgements](#acknowledgements)
-- [License](#license)
 
 ---
 
