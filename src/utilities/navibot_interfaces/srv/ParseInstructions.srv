@@ -1,0 +1,20 @@
+# ==============================================================================
+# ParseInstructions Service Definition
+# ==============================================================================
+# Service for parsing natural language behavioral instructions into structured
+# representations suitable for navigation systems.
+#
+# @author Wang Junhui <wjh_9696@163.com>
+# @license MIT
+# ==============================================================================
+
+# Request
+string[] online_constraints    # Short-term behavioral constraints
+string[] offline_constraints   # Long-term behavioral constraints
+
+---
+
+# Response
+bool success                   # Whether parsing was successful
+string structured_output       # Structured behavioral constraints (JSON format)
+string message                 # Status or error message

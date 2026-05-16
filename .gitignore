@@ -1,0 +1,26 @@
+build
+
+devel
+
+install
+
+log/*
+
+.catkin_workspace
+
+*~
+
+.DS_Store
+
+.vscode
+
+docker/
+
+# Python cache files
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.env
+.env.*
+!.env.example

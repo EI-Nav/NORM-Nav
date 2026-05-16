@@ -1,0 +1,423 @@
+# ========================================================================
+# Object Modeling Configuration
+# ========================================================================
+# Configuration file for object modeling node.
+# This node synchronizes point cloud and GroundedSam messages to model
+# objects in 3D space using image-based detection masks.
+#
+# Author: Wang Junhui <wjh_9696@163.com>
+# License: MIT
+# ========================================================================
+
+object_modeling:
+  ros__parameters:
+    # ====================================================================
+    # Camera Intrinsic Parameters
+    # ====================================================================
+    
+    # Camera intrinsic matrix (3x3 matrix flattened in row-major order)
+    # Type: array of float
+    # Format: [fx, 0, cx, 0, fy, cy, 0, 0, 1]
+    # Where:
+    #   fx, fy: focal lengths in pixels
+    #   cx, cy: principal point coordinates in pixels
+    # Note: Obtain these values from camera calibration
+    # Default: Example values for 640x480 camera
+    camera_matrix: [643.426025390625, 0.0, 661.8920288085938, 0.0, 642.2935180664062, 362.8033142089844, 0.0, 0.0, 1.0]
+    
+    # Distortion coefficients
+    # Type: array of float
+    # Format: [k1, k2, p1, p2, k3] (5 parameters for radial and tangential distortion)
+    # Note: Used for camera distortion correction in point projection
+    # Default: No distortion
+    dist_coeffs: [-0.0570552684366703, 0.06981630623340607, -0.0003323876590002328, 0.0007728748023509979, -0.022836938500404358]
+    
+    # Image dimensions
+    # Type: integer
+    # Unit: pixels
+    # Note: Should match the resolution of input images from GroundedSam
+    image_width: 1280
+    image_height: 720
+    
+    # ====================================================================
+    # Topic Configuration
+    # ====================================================================
+    
+    # Input point cloud topic to subscribe to
+    # Type: string
+    # Message type: sensor_msgs/msg/PointCloud2
+    # Note: Should come from LIO system (e.g., FAST-LIO)
+    # Default: "/cloud_registered"
+    pointcloud_topic: "/cloud_registered"
+    
+    # Input GroundedSam detection topic to subscribe to
+    # Type: string
+    # Message type: navibot_interfaces/msg/GroundedSam
+    # Note: Should come from grounded_sam2_tracker node
+    # Default: "/grounded_sam2_tracker/grounded_sam"
+    grounded_sam_topic: "/grounded_sam2_tracker/grounded_sam"
+    
+    # Output segmented point cloud topic to publish
+    # Type: string
+    # Message type: sensor_msgs/msg/PointCloud2
+    # Format: XYZRGB point cloud with different colors for different objects
+    # Note: Uses relative topic name (~), resolves to /object_modeling/segmented_pointcloud
+    # Default: "~/segmented_pointcloud"
+    output_topic: "~/segmented_pointcloud"
+    
+    # ====================================================================
+    # Synchronization Configuration
+    # ====================================================================
+    
+    # Queue size for message synchronization
+    # Type: integer
+    # Range: [1, 100]
+    # Effect: Number of messages to buffer for time synchronization
+    # Recommended: 10-20
+    # Default: 10
+    sync_queue_size: 1
+    
+    # Time synchronization tolerance (slop)
+    # Type: float
+    # Unit: seconds
+    # Range: [0.01, 1.0]
+    # Effect: Maximum allowed time difference between synchronized messages
+    # Note: Larger values allow more asynchronous data but may reduce accuracy
+    # Recommended: 0.05-0.2
+    # Default: 0.1
+    sync_slop: 0.2
+    
+    # ====================================================================
+    # Frame ID Configuration
+    # ====================================================================
+    
+    # Point cloud coordinate frame ID
+    # Type: string
+    # Note: Should match the frame_id in point cloud messages
+    # Common values: "livox_frame", "lidar", "velodyne", "map"
+    # Default: "livox_frame"
+    pointcloud_frame: "map"
+    
+    # Camera coordinate frame ID
+    # Type: string
+    # Note: Should match the frame_id in camera/image messages
+    # Common values: "camera_link", "camera_optical_frame", "rgb_camera"
+    # Default: "camera_link"
+    camera_frame: "camera_color_optical_frame"
+    
+    # Base link coordinate frame ID
+    # Type: string
+    # Note: Robot base link frame for OBB computation
+    # Common values: "base_link", "base_footprint"
+    # Default: "base_link"
+    base_link_frame: "base_link"
+    
+    # ====================================================================
+    # Transform Configuration
+    # ====================================================================
+    
+    # TF lookup timeout
+    # Type: float
+    # Unit: seconds
+    # Range: [0.01, 1.0]
+    # Effect: How long to wait for TF transform lookup
+    # Recommended: 0.05-0.2
+    # Default: 0.1
+    tf_timeout: 0.1
+    
+    # ====================================================================
+    # Segmentation Configuration
+    # ====================================================================
+    
+    # Minimum depth for point projection
+    # Type: float
+    # Unit: meters
+    # Effect: Points closer than this distance will be ignored
+    # Recommended: 0.1-0.5
+    # Default: 0.1
+    min_depth: 0.3
+    
+    # Maximum depth for point projection
+    # Type: float
+    # Unit: meters
+    # Effect: Points farther than this distance will be ignored
+    # Recommended: 10.0-50.0
+    # Default: 50.0
+    max_depth: 20.0
+    
+    # ====================================================================
+    # Visualization Configuration
+    # ====================================================================
+    
+    # Color saturation for object colors (HSV color space)
+    # Type: float
+    # Range: [0.0, 1.0]
+    # Effect: Higher values produce more vivid colors
+    # Default: 0.85
+    color_saturation: 0.85
+    
+    # Color value/brightness for object colors (HSV color space)
+    # Type: float
+    # Range: [0.0, 1.0]
+    # Effect: Higher values produce brighter colors
+    # Default: 0.95
+    color_value: 0.95
+    
+    
+    # ====================================================================
+    # Segmentation Filtering Configuration
+    # ====================================================================
+    
+    # Minimum points required per object to be included
+    # Type: integer
+    # Range: [5, 100]
+    # Effect: Objects with fewer points are filtered out
+    # Recommended: 10-50 (depending on point cloud density)
+    # Default: 10
+    min_object_points: 10
+    
+    # ====================================================================
+    # Noise Filtering Configuration
+    # ====================================================================
+    
+    # Enable radius-based outlier removal for segmented point clouds
+    # Type: boolean
+    # Effect: When enabled, removes noise points using radius-based filtering
+    # Recommended: true (for better segmentation quality)
+    # Default: true
+    enable_cluster_filtering: true
+    
+    # Maximum distance between points in the same cluster
+    # Type: float
+    # Unit: meters
+    # Range: [0.01, 0.5]
+    # Effect: Points within this distance are considered part of the same cluster
+    # Recommended: 0.05-0.2 for indoor scenes, 0.1-0.3 for outdoor scenes
+    # Default: 0.2 (increased for better clustering)
+    cluster_eps: 0.2
+    
+    # Minimum number of points to form a cluster
+    # Type: integer
+    # Range: [3, 50]
+    # Effect: Clusters with fewer points than this are considered noise
+    # Recommended: 5-15 for dense point clouds, 3-8 for sparse ones
+    # Default: 3 (decreased to be more permissive)
+    cluster_min_samples: 20
+    
+    # ====================================================================
+    # Object Modeling Configuration
+    # ====================================================================
+    
+    # Enable object modeling with OBB fitting
+    
+    
+    # Minimum points required for OBB fitting
+    # Type: integer
+    # Range: [3, 50]
+    # Effect: Objects with fewer points are not fitted with OBB
+    # Recommended: 5-10 for reliable OBB fitting
+    # Default: 5
+    min_obb_points: 5
+    
+    # Scale factor for OBB marker visualization
+    # Type: float
+    # Range: [0.1, 2.0]
+    # Effect: Multiplier for OBB marker size in RViz
+    # Recommended: 1.0 (actual size) or 1.1-1.2 (slightly larger for visibility)
+    # Default: 1.0
+    obb_marker_scale: 1.0
+    
+    # ====================================================================
+    # OBB Visualization Configuration
+    # ====================================================================
+    
+    # Enable publishing OBB markers to RViz
+    # Type: boolean
+    # Effect: When enabled, publishes MarkerArray with OBB boxes for visualization
+    # Recommended: true (for debugging and visualization)
+    # Default: true
+    publish_obb_markers: true
+    
+    # Topic for publishing OBB markers
+    # Type: string
+    # Message type: visualization_msgs/msg/MarkerArray
+    # Effect: RViz topic for displaying OBB boxes
+    # Note: Uses relative topic name (~), resolves to /object_modeling/object_obb_markers
+    # Default: "~/object_obb_markers"
+    obb_marker_topic: "~/object_obb_markers"
+    
+    # Lifetime for OBB markers
+    # Type: float
+    # Unit: seconds
+    # Range: [0.01, 1.0]
+    # Effect: How long markers remain visible in RViz
+    # Recommended: 0.1-0.5 (shorter for real-time updates)
+    # Default: 0.1
+    obb_marker_lifetime: 0.1
+    
+    # ====================================================================
+    # Cross-Frame Association Configuration
+    # ====================================================================
+    
+    # Enable cross-frame object association with accumulation
+    # Type: boolean
+    # Effect: When enabled, accumulates points across multiple frames for better modeling
+    # Note: Uses IOU-based association to track objects across frames
+    # Recommended: true (for improved object modeling and tracking)
+    # Default: true
+    enable_cross_frame_association: true
+    
+    # Maximum number of frames to accumulate for modeling
+    # Type: integer
+    # Range: [2, 50]
+    # Effect: Maximum frames to accumulate points (used together with accumulation_iou_threshold)
+    # Note: Accumulation continues if EITHER IOU is small OR max frames not reached
+    # Recommended: 5-15 (balance between accuracy and memory usage)
+    # Default: 10
+    max_accumulation_frames: 20
+    
+    # Partial IOU threshold for object association
+    # Type: float
+    # Range: [0.0, 1.0]
+    # Effect: Minimum partial IOU between OBBs to consider objects the same
+    # Note: Partial IOU = intersection / min(volume1, volume2)
+    #       This is more suitable when objects have different sizes
+    #       Lower values allow more flexible association, higher values require stricter matching
+    # Recommended: 0.3-0.6 (partial IOU typically has higher values than standard IOU)
+    # Default: 0.3
+    iou_threshold: 0.01
+    
+    # Maximum age for objects (in frames)
+    # Type: integer
+    # Range: [10, 100]
+    # Effect: Objects not seen for this many frames become inactive
+    # Recommended: 20-50 (depending on frame rate and object visibility)
+    # Default: 30
+    max_object_age: 30
+    
+    # ====================================================================
+    # Object Fusion Configuration
+    # ====================================================================
+    
+    # Enable object fusion
+    # Type: boolean
+    # Effect: When enabled, objects with high IOU overlap are fused
+    # Recommended: true
+    # Default: true
+    enable_object_fusion: true
+    
+    # IOU threshold for object fusion
+    # Type: float
+    # Effect: Objects with IOU >= this threshold will be fused
+    # Range: 0.0-1.0
+    # Recommended: 0.3-0.7
+    # Default: 0.5
+    fusion_iou_threshold: 0.3
+    
+    # IOU threshold for point cloud accumulation
+    # Type: float
+    # Effect: Accumulate points when IOU < this threshold (small changes)
+    # Range: 0.0-1.0
+    # Note: Used together with max_accumulation_frames - accumulation continues if EITHER condition is met
+    # Recommended: 0.7-0.9
+    # Default: 0.8
+    accumulation_iou_threshold: 0.9
+
+    
+    # Warmup frames threshold for new objects
+    # Type: integer
+    # Range: [1, 20]
+    # Effect: Number of consecutive frames an object must be associated before DBSCAN filtering and publishing
+    # Recommended: 3-5
+    # Default: 5
+    warmup_frames_threshold: 1
+    
+    
+    # ====================================================================
+    # Publishing Rate Configuration
+    # ====================================================================
+    
+    # Publishing rate for point cloud and markers
+    # Type: float
+    # Unit: Hz
+    # Range: [0.1, 10.0]
+    # Effect: How often to publish modeled point cloud and markers
+    # Recommended: 1.0 Hz for real-time visualization
+    # Default: 1.0
+    publish_rate: 5.0
+    
+    # ====================================================================
+    # Radius Outlier Removal Configuration
+    # ====================================================================
+    
+    # Radius for outlier removal in new frame processing
+    # Type: float
+    # Unit: meters
+    # Range: [0.1, 2.0]
+    # Effect: Points with fewer neighbors within this radius are removed
+    # Recommended: 0.3-0.8 for indoor scenes, 0.5-1.5 for outdoor scenes
+    # Default: 0.5
+    radius_outlier_removal_radius: 0.2
+    
+    # Minimum neighbors required for radius outlier removal
+    # Type: integer
+    # Range: [1, 20]
+    # Effect: Points need at least this many neighbors to be kept
+    # Recommended: 3-8 depending on point cloud density
+    # Default: 3
+    radius_outlier_removal_min_neighbors: 5
+    
+    # ====================================================================
+    # OBB 2D Configuration
+    # ====================================================================
+    
+    # Enable publishing OBB info as custom messages
+    # Type: boolean
+    # Effect: When enabled, publishes OBBInfo2DArray messages
+    # Recommended: true (for navigation systems)
+    # Default: true
+    publish_obb_info: true
+    
+    # Topic for publishing OBB info messages
+    # Type: string
+    # Message type: navibot_interfaces/msg/OBBInfo2DArray
+    # Effect: Topic for publishing 2D OBB information
+    # Note: Uses relative topic name (~), resolves to /object_modeling/object_obb_info
+    # Default: "~/object_obb_info"
+    obb_info_topic: "~/object_obb_info"
+    
+    # Minimum height for OBB point filtering
+    # Type: float
+    # Unit: meters
+    # Effect: Points below this height are excluded from OBB fitting
+    # Recommended: -0.5 to 0.0 (ground level)
+    # Default: -0.5
+    obb_height_min: -1.0
+    
+    # Maximum height for OBB point filtering
+    # Type: float
+    # Unit: meters
+    # Effect: Points above this height are excluded from OBB fitting
+    # Recommended: 1.5 to 2.5 (typical object height)
+    # Default: 2.0
+    obb_height_max: 1.5
+    
+    # Fixed height for OBB marker visualization
+    # Type: float
+    # Unit: meters
+    # Effect: Z-scale for OBB markers in RViz
+    # Recommended: 1.0 to 2.0 (typical object height)
+    # Default: 1.0
+    obb_marker_height: 1.0
+    
+    # ====================================================================
+    # Performance Configuration
+    # ====================================================================
+    
+    # Enable debug logging
+    # Type: boolean
+    # Effect: When enabled, prints detailed processing information
+    # Recommended: false (for production), true (for debugging)
+    # Default: false
+    enable_debug_logging: false
+

@@ -1,0 +1,175 @@
+# Directional Constraint Costmap Parameters
+# =========================================
+# Generates directional constraint costmap from enhanced behavioral constraints.
+# Uses AABB information and direction constraints to create directional constraint layer.
+#
+# Author: Wang Junhui <wjh_9696@163.com>
+# Package: navibot_costmap
+# Node: directional_constraint_costmap_node
+
+/**:
+  ros__parameters:
+    # ========================
+    # Input/Output Configuration
+    # ========================
+    
+    # Input topic for compensated behavioral constraints
+    # Type: string
+    # Effect: Topic to receive enhanced behavioral constraints with AABB and direction info
+    # Default: "/compensated_behavioral_constraints"
+    constraint_topic: "/compensated_behavioral_constraints"
+    
+    # Output topic for directional constraint costmap
+    # Type: string
+    # Effect: Published costmap topic consumed by fusion node
+    # Default: "/costmap/directional"
+    output_topic: "/costmap/directional"
+    
+    # ========================
+    # Map Configuration
+    # ========================
+    
+    # Map resolution in meters per pixel
+    # Type: double
+    # Effect: Higher resolution = more detail but more computation and memory usage
+    # Range: 0.05 - 0.2 meters
+    # Recommended: 0.1 for balanced performance and detail
+    # Note: Should match other costmap layers for proper fusion
+    resolution: 0.1
+    
+    # Map dimensions in meters
+    # Type: double
+    # Effect: Physical size of the costmap in world coordinates
+    # Note: Should match other costmap layers for proper fusion
+    map_width: 20.0  # Map width in meters
+    map_height: 20.0  # Map height in meters
+    
+    # Map origin in meters (bottom-left corner)
+    # Type: double
+    # Effect: World coordinates of the bottom-left corner of the costmap
+    # Note: Should match other costmap layers for proper fusion
+    origin_x: -10.0
+    origin_y: -10.0
+    
+    # Coordinate frame for the costmap
+    # Type: string
+    # Effect: Reference frame for the costmap coordinates
+    # Common values: "map" (global), "base_link" (robot-centric)
+    frame_id: "map"
+    
+    # ========================
+    # Update Configuration
+    # ========================
+    
+    # Publish rate in Hz
+    # Type: double
+    # Effect: Lower rates reduce CPU usage but decrease update frequency
+    # Range: 0.1 - 10.0 Hz
+    # Recommended: 0.1 - 1.0 Hz for static environments
+    #             1.0 - 5.0 Hz for dynamic environments
+    publish_rate: 5.0
+    
+    # Enable detailed debug logging
+    # Type: bool
+    # Effect: Enable/disable detailed debug output for troubleshooting
+    # Recommended: false for production, true for debugging
+    enable_debug_logging: false
+    
+    # ========================
+    # TF Configuration
+    # ========================
+    
+    # Robot frame for centering the costmap
+    # Type: string
+    # Effect: Frame to use as center for costmap generation
+    # Note: Should be robot's base frame (e.g., base_link, base_footprint)
+    # Default: "base_link"
+    center_frame_id: "base_link"
+    
+    # Timeout for TF transforms (seconds)
+    # Type: double
+    # Effect: Maximum time to wait for TF transform availability
+    # Range: 0.1 - 10.0 seconds
+    # Recommended: 1.0 - 2.0 seconds
+    # Note: Increase if experiencing frequent transform failures
+    transform_timeout: 1.0
+    
+    # ========================
+    # Map Operation Modes
+    # ========================
+    
+    # Two modes of operation for directional constraint costmap:
+    # 
+    # Mode 1: Static global map (frame_id = "map", center_frame_id = "map")
+    #   - Example: frame_id = "map", center_frame_id = "map"
+    #   - Costmap boundaries are fixed in world coordinates
+    #   - Costmap does NOT move with robot
+    #   - Best for: Global navigation, pre-mapped environments
+    #   - Use case: Known environments with static directional constraints
+    # 
+    # Mode 2: Robot-centric map (frame_id = "base_link", center_frame_id = "base_link")
+    #   - Example: frame_id = "base_link", center_frame_id = "base_link"
+    #   - Costmap boundaries are defined relative to robot
+    #   - Costmap follows robot movement
+    #   - Best for: Local navigation, dynamic environments
+    #   - Use case: Real-time directional constraints around moving robot
+    # 
+    # Common frame combinations:
+    #   "map" + "map"       - Global static map (Mode 1)
+    #   "base_link" + "base_link" - Robot-centric map (Mode 2)
+    #   "map" + "base_link" - Global frame with robot-centered generation
+    #   "odom" + "base_link" - Odometry frame with robot-centered generation
+    
+    # ========================
+    # Directional Constraint Costmap Values
+    # ========================
+    
+    # Occupancy value for free space (no directional constraints)
+    # Type: int
+    # Effect: Default value for areas without directional constraints
+    # Standard values: 0 (free), -1 (unknown), 1-100 (various cost levels)
+    free_space_value: 0
+    
+    # ========================
+    # Interpolation Parameters
+    # ========================
+    
+    # Interpolation parameter alpha for controlling gradient steepness
+    # Type: double
+    # Effect: Higher values create steeper gradients in directional constraints
+    # Range: 0.1 - 5.0
+    # Recommended: 1.0 (linear) to 2.0 (quadratic)
+    # Note: Used for smooth transition between constraint regions
+    interpolation_alpha: 1.0
+    
+    # Margin distance for expanding AABB of non-traversable objects (meters)
+    # Type: double
+    # Effect: Objects marked as non-traversable will have their AABB expanded by this distance
+    # Range: 0.0 - 2.0 meters
+    # Recommended: 0.5 - 1.0 meters
+    # Note: Larger values provide more safety margin around obstacles
+    margin_distance: 1.0
+    
+    # Interpolation boundary cost values for directional constraints
+    # These values define the cost distribution across directional constraint regions
+    
+    # Left boundary cost value (high cost region)
+    # Type: int
+    # Effect: Cost value for left boundary of directional constraints
+    # Range: 0 - 100
+    # Note: High cost indicates restricted movement in this direction
+    c1_cost_value: 99
+    
+    # Middle cost value (low cost/navigable region)
+    # Type: int
+    # Effect: Cost value for middle region of directional constraints
+    # Range: 0 - 100
+    # Note: Low cost indicates preferred movement direction
+    c2_cost_value: 0
+    
+    # Right boundary cost value (high cost region)
+    # Type: int
+    # Effect: Cost value for right boundary of directional constraints
+    # Range: 0 - 100
+    # Note: High cost indicates restricted movement in this direction
+    c3_cost_value: 99

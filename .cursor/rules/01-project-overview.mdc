@@ -1,0 +1,24 @@
+# NORM-Nav — Project Overview
+
+## Project facts
+
+- **Stack**: ROS 2 mobile robot navigation
+- **Naming**: All first-party packages use the `navibot_` prefix
+- **Languages**: Python 3.10+, C++17
+- **ROS 2 distro**: Humble
+
+## Assistant response language
+
+Use the language requested by the user. **Global Cursor user rules override** this file when they specify a default (e.g. always reply in Chinese).
+
+## Code comments
+
+**All code comments and docstrings must be English.**
+
+- Docstrings for functions and classes: English
+- Inline comments: English
+- Identifiers (variables, functions, types): English
+
+## Further standards
+
+See the other files under `.cursor/rules/` for full coding conventions.

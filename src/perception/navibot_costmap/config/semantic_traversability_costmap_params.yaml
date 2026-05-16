@@ -1,0 +1,94 @@
+# Semantic Traversability Costmap Parameters
+# ===========================================
+# Generates semantic traversability costmap from enhanced behavioral constraints.
+# Uses AABB information and traversability constraints to create semantic costmap layer.
+#
+# Author: Wang Junhui <wjh_9696@163.com>
+# Package: navibot_costmap
+# Node: semantic_traversability_costmap_node
+
+/**:
+  ros__parameters:
+    # ========================
+    # Input/Output Configuration
+    # ========================
+    
+    # Input topic for compensated behavioral constraints
+    constraint_topic: "/compensated_behavioral_constraints"
+    
+    # Output topic for semantic costmap
+    output_topic: "/costmap/semantic"
+    
+    # ========================
+    # Map Configuration
+    # ========================
+    
+    # Map resolution in meters per pixel
+    # Should match other costmap layers for proper fusion
+    resolution: 0.1
+    
+    # Map dimensions in meters
+    # These values define the physical size of the costmap
+    # Pixel dimensions are calculated automatically: pixels = meters / resolution
+    map_width: 20.0
+    map_height: 20.0
+    
+    # Map origin in meters (bottom-left corner)
+    # Note: These values will be dynamically updated based on robot position
+    # Default values are used as fallback when robot pose is unavailable
+    origin_x: 0.0
+    origin_y: 0.0
+    
+    # Coordinate frame for the costmap
+    frame_id: "map"
+    
+    # ========================
+    # Update Configuration
+    # ========================
+    
+    # Publish rate in Hz
+    # Lower rates reduce CPU usage but decrease update frequency
+    # Recommended: 0.1 - 1.0 Hz for semantic constraints
+    publish_rate: 5.0
+    
+    # Enable detailed debug logging
+    enable_debug_logging: false
+    
+    # ========================
+    # TF Configuration
+    # ========================
+    
+    # Center frame for map generation (robot position)
+    # Type: string
+    # Effect: Frame to use as center for costmap generation
+    # Note: Should be robot's base frame (e.g., base_link, base_footprint)
+    # Default: "base_link"
+    center_frame_id: "base_link"
+    
+    # TF transform timeout in seconds
+    # Type: double
+    # Effect: Maximum time to wait for TF transform
+    # Range: 0.1 - 10.0 seconds
+    # Recommended: 1.0 - 2.0 seconds
+    # Default: 1.0
+    transform_timeout: 1.0
+    
+    # ========================
+    # Semantic Costmap Values
+    # ========================
+    
+    # Occupancy value for free space (no constraints)
+    # Used as default value for map initialization
+    free_space_value: 0
+    
+    # Value for traversable objects (traversability_constrain = 1)
+    # Objects that can be traversed by the robot
+    traversable_value: 1
+    
+    # Value for non-traversable objects (traversability_constrain = 2)
+    # Objects that cannot be traversed by the robot
+    non_traversable_value: 2
+    
+    # Value for null/unknown traversability (traversability_constrain = 0)
+    # Objects with undefined traversability constraints
+    null_value: 0

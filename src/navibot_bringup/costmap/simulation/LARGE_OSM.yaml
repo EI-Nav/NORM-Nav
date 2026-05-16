@@ -1,0 +1,22 @@
+free_thresh: 0.25
+image: LARGE_OSM.pgm
+negate: 0
+occupied_thresh: 0.65
+origin:
+- -58.545707368524745
+- -54.58745584078133
+- 0.0
+resolution: 0.2
+transform_matrix:
+  row1:
+  - 1.0
+  - 0.0
+  - -500000.0
+  row2:
+  - 0.0
+  - 1.0
+  - -4483000.0
+  row3:
+  - 0.0
+  - 0.0
+  - 1.0

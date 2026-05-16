@@ -1,0 +1,11 @@
+<library path="waypoint_rviz_plugin">
+  <class name="waypoint_rviz_plugin/WaypointTool"
+         type="waypoint_rviz_plugin::WaypointTool"
+         base_class_type="rviz_common::Tool">
+    <description>
+      Navigation Goal Tool - Enhanced goal setting tool with highlighted visualization.
+      Publishes PoseStamped to /goal_pose (Nav2 compatible) and provides
+      adjustable visualization markers for prominent goal display in RViz2.
+    </description>
+  </class>
+</library>

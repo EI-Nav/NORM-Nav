@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="3">
+  <name>navibot_bringup</name>
+  <version>1.0.0</version>
+  <description>Bringup package for NaviBot classic navigation stack with LIO and Nav2</description>
+  <maintainer email="wjh_9696@163.com">Wang Junhui</maintainer>
+  <license>MIT</license>
+  <author email="wjh_9696@163.com">Wang Junhui</author>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+
+  <!-- Launch dependencies -->
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+
+  <!-- Core ROS2 dependencies -->
+  <exec_depend>rviz2</exec_depend>
+  <exec_depend>robot_state_publisher</exec_depend>
+  <exec_depend>tf2_ros</exec_depend>
+  <exec_depend>xacro</exec_depend>
+
+  <!-- Sensor driver dependencies -->
+  <exec_depend>livox_ros_driver2</exec_depend>
+  <exec_depend>imu_complementary_filter</exec_depend>
+
+  <!-- Perception dependencies -->
+  <exec_depend>linefit_ground_segmentation_ros</exec_depend>
+  <exec_depend>navibot_pointcloud_to_laserscan</exec_depend>
+  <exec_depend>navibot_costmap</exec_depend>
+
+  <!-- SLAM dependencies -->
+  <exec_depend>fast_lio</exec_depend>
+  <exec_depend>navibot_lio_interface</exec_depend>
+
+  <!-- Navigation dependencies -->
+  <exec_depend>navibot_navigation</exec_depend>
+
+  <!-- Simulation dependencies (optional but commonly used) -->
+  <exec_depend>navibot_simulation</exec_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

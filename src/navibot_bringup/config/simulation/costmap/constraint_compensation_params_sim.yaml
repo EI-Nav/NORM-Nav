@@ -1,0 +1,94 @@
+# ==============================================================================
+# Constraint Compensation Parameters
+# ==============================================================================
+# Compensates behavioral constraints based on geometric traversability costmap.
+# Calculates average geometric cost for AABB regions and updates traversability
+# constraints for null values based on geometric cost threshold.
+#
+# This node subscribes to enhanced behavioral constraints and geometric costmap,
+# calculates average geometric cost for AABB regions, and updates traversability
+# constraints for null values based on geometric cost threshold.
+#
+# Author: Wang Junhui <wjh_9696@163.com>
+# Package: navibot_costmap
+# Node: constraint_compensation_node
+# ==============================================================================
+
+/**:
+  ros__parameters:
+    # ==============================================================================
+    # Input/Output Configuration
+    # ==============================================================================
+    
+    # Input topic for behavioral constraints
+    # Format: BehavioralConstraintArray message containing behavioral constraints
+    # Usage: Subscribe to behavioral constraints from instruction parsing
+    # Default: "/behavioral_constraints"
+    constraint_topic: "/behavioral_constraints"
+    
+    # Input topic for geometric traversability costmap
+    # Format: nav_msgs/OccupancyGrid containing geometric cost information
+    # Usage: Subscribe to geometric costmap from traversability analysis
+    # Default: "/costmap/geometric"
+    geometric_costmap_topic: "/costmap/geometric"
+    
+    # Input topic for OBB information
+    # Format: OBBInfo2DArray message containing object OBB information
+    # Usage: Subscribe to object bounding box information from object modeling
+    # Default: "/object_modeling/object_obb_info"
+    obb_info_topic: "/object_modeling/object_obb_info"
+    
+    # Output topic for compensated behavioral constraints
+    # Format: BehavioralConstraintArray message containing compensated behavioral constraints
+    # Usage: Publish compensated constraints for navigation system
+    # Default: "/compensated_behavioral_constraints"
+    output_topic: "/compensated_behavioral_constraints"
+    
+    # ==============================================================================
+    # Geometric Cost Compensation Configuration
+    # ==============================================================================
+    
+    # Geometric cost threshold for traversability determination
+    # Units: Cost value (0-100 scale)
+    # Effect: If average geometric cost in AABB region > threshold, set to non-traversable
+    #         Otherwise, set to traversable
+    # Range: 0.0 - 100.0
+    # Recommended: 10.0 - 50.0 for most environments
+    # Default: 10.0
+    geometric_cost_threshold: 50.0
+    
+    # Rotation angle tolerance for OBB consistency checking
+    # Units: Degrees
+    # Effect: Maximum allowed rotation difference between OBBs in degrees
+    # Range: 0.0 - 180.0
+    # Recommended: 1.0 - 5.0 degrees for most applications
+    # Default: 1.0
+    rotation_tolerance_deg: 1.0
+    
+    # Minimum number of valid cost points required for compensation
+    # Units: Count
+    # Effect: Minimum valid cost points needed in OBB region for reliable compensation
+    # Range: 1 - 100
+    # Recommended: 1 - 5 for most applications
+    # Default: 1
+    min_valid_cost_points: 1
+    
+    # ==============================================================================
+    # Performance Configuration
+    # ==============================================================================
+    
+    # Enable detailed debug logging
+    # Effect: When enabled, provides detailed debug information about compensation process
+    # Options:
+    #   - false: Standard logging (INFO level) - recommended for production
+    #   - true:  Detailed debug logging (DEBUG level) - useful for debugging
+    # Default: false
+    enable_debug_logging: false
+    
+    # Compensation processing rate in Hz
+    # Effect: How often to process and publish compensated constraints
+    # Lower rates reduce CPU usage but decrease compensation update frequency
+    # Range: 0.1 - 10.0 Hz
+    # Recommended: 0.5 - 2.0 Hz for most applications
+    # Default: 1.0 Hz
+    publish_rate: 5.0

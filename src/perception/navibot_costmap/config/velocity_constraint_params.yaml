@@ -1,0 +1,35 @@
+# ==============================================================================
+# Velocity Constraint Node Parameters - Default
+# ==============================================================================
+# Configuration file for velocity constraint node.
+# This node subscribes to behavioral constraints and publishes velocity limits
+# based on robot position relative to constraint regions.
+#
+# @author Wang Junhui <wjh_9696@163.com>
+# @license MIT
+# ==============================================================================
+
+velocity_constraint_node:
+  ros__parameters:
+    # Input/Output configuration
+    constraint_topic: "/compensated_behavioral_constraints"  # Topic for receiving behavioral constraints
+    self_constraint_topic: "/behavioral_constraints"        # Topic for receiving self-targeted constraints
+    output_topic: "/speed_limit"                            # Topic for publishing velocity limits
+    
+    # Velocity configuration
+    default_speed_percentage: 50.0  # Default speed percentage (0.0-100.0) when no constraints apply
+    
+    # Update configuration
+    update_rate: 10.0             # Processing frequency in Hz (1.0-100.0 recommended)
+    enable_debug_logging: false   # Enable detailed debug logging (true/false)
+    
+    # TF configuration
+    frame_id: "map"              # Global frame for coordinate transformations
+    robot_frame_id: "base_link"  # Robot base frame for position queries
+    transform_timeout: 0.1       # TF lookup timeout in seconds (0.01-5.0)
+    
+    # OBB configuration
+    margin_distance: 1.2         # Expansion margin in meters for non-traversable areas (0.0-10.0)
+    
+    # Performance configuration
+    enable_caching: true         # Enable trigonometric caching for performance optimization (true/false)

@@ -1,0 +1,4 @@
+[submodule "src/localization/FAST_LIO"]
+	path = src/localization/FAST_LIO
+	url = https://github.com/KEEPSLAMDUNK/FAST_LIO.git
+	branch = ROS2

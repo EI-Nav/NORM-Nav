@@ -1,0 +1,305 @@
+# ========================================================================
+# GroundedSAM2 Tracker Configuration
+# ========================================================================
+# Configuration file for real-time object tracking using GroundingDINO and SAM2.
+# This file defines all parameters for the grounded_sam2_tracker ROS2 node.
+#
+# Author: Wang Junhui <wjh_9696@163.com>
+# License: MIT
+# ========================================================================
+
+grounded_sam2_tracker:
+  ros__parameters:
+    # ====================================================================
+    # Model Configuration
+    # ====================================================================
+    
+    # GroundingDINO model identifier from HuggingFace
+    # Type: string
+    # Options:
+    #   - "IDEA-Research/grounding-dino-tiny": Faster inference, lower accuracy (~600MB)
+    #   - "IDEA-Research/grounding-dino-base": Slower inference, higher accuracy (~1.2GB)
+    # Default: "IDEA-Research/grounding-dino-tiny"
+    grounding_model_id: "IDEA-Research/grounding-dino-tiny"
+    
+    # SAM2 model identifier from HuggingFace
+    # Type: string
+    # Options:
+    #   - "facebook/sam2.1-hiera-tiny": Fastest inference (~1.5GB VRAM)
+    #   - "facebook/sam2.1-hiera-small": Balanced performance (~2GB VRAM)
+    #   - "facebook/sam2.1-hiera-base-plus": Good quality (~3GB VRAM)
+    #   - "facebook/sam2.1-hiera-large": Best quality (~4GB VRAM)
+    # Default: "facebook/sam2.1-hiera-small"
+    sam2_model_id: "facebook/sam2.1-hiera-small"
+    
+    # Computation device for model inference
+    # Type: string
+    # Options: "cuda" (GPU acceleration) or "cpu" (CPU only)
+    # Note: Automatically falls back to CPU if CUDA is not available
+    # Default: "cuda"
+    device: "cuda"
+    
+    # ====================================================================
+    # Detection Configuration
+    # ====================================================================
+    
+    # Detection prompt text (period-separated list of object classes)
+    # Type: string
+    # Format: Space-separated class names, each ending with a period
+    # Examples:
+    #   - "car.": Detect cars
+    #   - "bottle. cup.": Detect bottles and cups
+    # Default: "car."
+    prompt_text: "person."
+    
+    # Bounding box confidence threshold
+    # Type: float
+    # Range: [0.0, 1.0]
+    # Effect: Higher values produce fewer but more confident detections
+    # Recommended: 0.25-0.45
+    # Default: 0.35
+    box_threshold: 0.35
+    
+    # Text-image matching confidence threshold
+    # Type: float
+    # Range: [0.0, 1.0]
+    # Effect: Higher values require stricter text-image matching
+    # Recommended: 0.20-0.30
+    # Default: 0.25
+    text_threshold: 0.25
+    
+    # ====================================================================
+    # Tracking Configuration
+    # ====================================================================
+    
+    # Detection interval (frames between full detection runs)
+    # Type: integer
+    # Range: [1, inf)
+    # Modes:
+    #   - detection_interval=1: Pure detection mode
+    #     * Performance: ~3-4 FPS
+    #     * Memory: Saves 3-4GB GPU memory (no video predictor loaded)
+    #     * Use case: Low-end GPU or memory-constrained scenarios
+    #   - detection_interval>1: Hybrid detection+tracking mode
+    #     * Performance: ~10-15 FPS
+    #     * Memory: Full GPU memory usage
+    #     * Use case: Mid/high-end GPU for real-time tracking
+    # Recommended: 1 (low-end GPU), 10-20 (mid/high-end GPU)
+    # Default: 20
+    detection_interval: 10
+    
+    # IOU (Intersection over Union) threshold for track association
+    # Type: float
+    # Range: [0.0, 1.0]
+    # Effect:
+    #   - Higher values: Stricter matching, may lose tracks more easily
+    #   - Lower values: Looser matching, may cause ID switches
+    # Recommended: 0.25-0.40
+    # Default: 0.3
+    iou_threshold: 0.3
+    
+    # ====================================================================
+    # Display Configuration
+    # ====================================================================
+    
+    # Statistics print interval
+    # Type: integer
+    # Range: [1, inf)
+    # Unit: frames
+    # Effect: Performance metrics are printed to console every N frames
+    # Default: 10
+    stats_print_interval: 10
+    
+    # Overlay alpha transparency for mask visualization
+    # Type: float
+    # Range: [0.0, 1.0]
+    # Effect: Controls mask overlay transparency (0.0=transparent, 1.0=opaque)
+    # Recommended: 0.3-0.7
+    # Default: 0.5
+    overlay_alpha: 0.5
+    
+    # Information display box width
+    # Type: integer
+    # Range: [1, inf)
+    # Unit: pixels
+    # Recommended: 300-500
+    # Default: 400
+    info_box_width: 400
+    
+    # Information display box height
+    # Type: integer
+    # Range: [1, inf)
+    # Unit: pixels
+    # Recommended: 120-250
+    # Default: 180
+    info_box_height: 180
+    
+    # ====================================================================
+    # Topic Configuration
+    # ====================================================================
+    
+    # Input image topic to subscribe to
+    # Type: string
+    # Message type: sensor_msgs/msg/Image
+    # Encoding: Expected RGB8 or BGR8
+    # Default: "/camera_sensor/image_raw"
+    input_image_topic: "/camera/camera/color/image_raw"
+    
+    # Output annotated image topic to publish
+    # Type: string
+    # Message type: sensor_msgs/msg/Image
+    # Encoding: RGB8 with masks, boxes, and labels overlay
+    # Note: Uses relative topic name (~), resolves to /grounded_sam2_tracker/output_image
+    # Default: "~/output_image"
+    output_image_topic: "~/output_image"
+    
+    # Structured detection results topic to publish
+    # Type: string
+    # Message type: navibot_interfaces/msg/GroundedSam
+    # Content: Structured message with source image, label image, class names, IDs, confidences, and boxes
+    # Note: Uses relative topic name (~), resolves to /grounded_sam2_tracker/grounded_sam
+    # Default: "~/grounded_sam"
+    grounded_sam_topic: "~/grounded_sam"
+    
+    # Prompt update topic to subscribe to
+    # Type: string
+    # Message type: std_msgs/msg/String
+    # Effect: Allows dynamic prompt updates during runtime
+    # Note: Uses relative topic name (~), resolves to /grounded_sam2_tracker/prompt
+    # Default: "~/prompt"
+    prompt_topic: "~/prompt"
+    
+    # ====================================================================
+    # Performance Optimization Configuration
+    # ====================================================================
+    
+    # Enable visualization overlay on output image
+    # Type: boolean
+    # Effect: When disabled, output_image will be the original image without masks/boxes/labels
+    # This saves 15-30% processing time if you only need the detection data
+    # Performance Impact:
+    #   - Disabled: 15-30% FPS improvement, saves GPU memory for mask processing
+    #   - Enabled: Full visual feedback with masks, boxes, and labels
+    # Recommended: true (if you need visual feedback), false (if you only need data)
+    # Default: true
+    enable_visualization: true
+    
+    # Include source image in GroundedSam message
+    # Type: boolean
+    # Effect: When disabled, GroundedSam message will not include source_image field
+    # This reduces message size and serialization overhead by ~30-50%
+    # Recommended: false (if downstream nodes already have the image), true (if needed)
+    # Default: false
+    include_source_image_in_msg: false
+    
+    # GPU cache clear interval
+    # Type: integer
+    # Range: [1, inf)
+    # Unit: frames
+    # Effect: How often to clear GPU cache (torch.cuda.empty_cache())
+    # Performance impact:
+    #   - Lower values (1-10): More frequent cache clearing, may reduce FPS but saves VRAM
+    #   - Higher values (50-100): Better FPS (3-8% improvement), slightly higher VRAM usage
+    # Recommended: 10 (memory-constrained), 20 (balanced), 50+ (high-performance)
+    # Default: 10
+    # Note: Detection frames always clear cache regardless of this setting
+    gpu_cache_clear_interval: 10
+    
+    # Enable PyTorch 2.0+ model compilation
+    # Type: boolean
+    # Effect: When enabled, uses torch.compile() to optimize model inference
+    # Compilation mode: 'default' with fullgraph=False (memory-efficient)
+    #   - Does NOT use CUDA Graphs (saves ~2.7GB VRAM)
+    #   - Partial graph compilation for better memory efficiency
+    # Performance impact:
+    #   - First run: Slower due to compilation overhead (30-60 seconds)
+    #   - Subsequent runs: 10-20% faster inference (optimized for real-time navigation)
+    # Memory impact:
+    #   - Additional VRAM usage: 50-150MB for compilation overhead
+    #   - Much lower than 'reduce-overhead' mode which uses CUDA Graphs (~2.7GB)
+    # Requirements: PyTorch 2.0+
+    # Recommended: true (for real-time navigation with 8GB+ VRAM), false (for development/testing)
+    # Default: false
+    # Note: If compilation fails, will automatically fallback to uncompiled model
+    enable_torch_compile: false
+    
+    # ====================================================================
+    # Real-time Navigation Performance Tuning
+    # ====================================================================
+    
+    # Performance optimization recommendations for real-time navigation:
+    # 
+    # 1. For maximum FPS (low latency):
+    #    - detection_interval: 1 (pure detection mode)
+    #    - enable_visualization: false (saves 15-30% processing time)
+    #    - include_source_image_in_msg: false (reduces message overhead)
+    #    - gpu_cache_clear_interval: 50+ (better FPS, slightly higher VRAM)
+    #    - enable_torch_compile: true (10-20% speedup after warmup)
+    #    - sam2_model_id: "facebook/sam2.1-hiera-tiny" (fastest inference)
+    #    - grounding_model_id: "IDEA-Research/grounding-dino-tiny" (faster inference)
+    #
+    # 2. For balanced performance (good FPS + tracking):
+    #    - detection_interval: 10-20 (hybrid mode)
+    #    - enable_visualization: true (visual feedback)
+    #    - gpu_cache_clear_interval: 20 (balanced)
+    #    - enable_torch_compile: true (if VRAM allows)
+    #    - sam2_model_id: "facebook/sam2.1-hiera-small" (balanced)
+    #
+    # 3. For memory-constrained systems:
+    #    - detection_interval: 1 (saves 3-4GB VRAM)
+    #    - enable_visualization: false
+    #    - gpu_cache_clear_interval: 5-10 (frequent cleanup)
+    #    - enable_torch_compile: false (saves compilation overhead)
+    #    - sam2_model_id: "facebook/sam2.1-hiera-tiny"
+    
+    # ====================================================================
+    # Debug Configuration
+    # ====================================================================
+    
+    # Enable debug logging
+    # Type: boolean
+    # Effect: When enabled, shows detailed frame-by-frame processing information
+    # Recommended: false (for cleaner console output)
+    # Default: false
+    enable_debug_logging: false
+    
+    # Enable label image debug publishing
+    # Type: boolean
+    # Effect: When enabled, publishes label_image as a separate debug topic
+    # The label_image is a semantic segmentation mask where each pixel value
+    # represents the object ID (0 for background, >0 for detected objects)
+    # This is useful for debugging object segmentation and ID assignment
+    # Smart publishing: Only publishes when there are subscribers (saves bandwidth)
+    # Recommended: false (for production), true (for debugging/visualization)
+    # Default: false
+    enable_label_image_debug: true
+    
+    # Label image debug topic name
+    # Type: string
+    # Message type: sensor_msgs/msg/Image
+    # Encoding: mono16 (16-bit grayscale with object IDs as pixel values)
+    # Note: Uses relative topic name (~), resolves to /grounded_sam2_tracker/label_image_debug
+    # Default: "~/label_image_debug"
+    label_image_debug_topic: "~/label_image_debug"
+    
+    # ====================================================================
+    # Constraint Integration Configuration
+    # ====================================================================
+    
+    # Enable subscription to behavioral constraints from instruction parsing
+    # Type: boolean
+    # Effect: When enabled, subscribes to behavioral_constraints topic and automatically
+    #         updates detection prompt based on object_list from parsed constraints
+    # Integration: Works with navibot_instruction_parsing package
+    # Recommended: true (for integrated navigation systems), false (for standalone use)
+    # Default: true
+    enable_constraint_subscription: true
+    
+    # Behavioral constraints topic to subscribe to
+    # Type: string
+    # Message type: std_msgs/msg/String
+    # Format: JSON string containing structured behavioral constraints
+    # Content: Parsed constraints with object_list, direction_constrain, velocity_constrain, etc.
+    # Source: Published by navibot_instruction_parsing package
+    # Default: "/behavioral_constraints"
+    constraint_topic: "/behavioral_constraints"

@@ -1,0 +1,40 @@
+# Configuration file for behavioral instruction parsing node
+
+instruction_parsing_node:
+  ros__parameters:
+    # LLM Interface Configuration
+    llm:
+      interface_type: "openai"  # Type of LLM interface: openai, local
+      base_url: "https://dashscope.aliyuncs.com/compatible-mode/v1"  # Base URL for LLM service
+      model: "qwen-flash"  # Model name to use (for both OpenAI and local LLM)
+      max_tokens: 1000  # Maximum tokens in response
+      temperature: 0.1  # Generation temperature (0.0-1.0)
+    
+    # Node Configuration
+    publish_structured_output: true  # Whether to publish structured output
+    log_level: "INFO"  # Logging level: DEBUG, INFO, WARN, ERROR, FATAL
+    
+    # Processing Configuration
+    processing:
+      llm_timeout: 30.0  # Timeout for LLM processing (seconds)
+      max_retries: 3  # Maximum number of retries for LLM calls
+      retry_delay: 1.0  # Retry delay between attempts (seconds)
+      enable_caching: false  # Enable caching of parsed results
+      cache_timeout: 300.0  # Cache timeout (seconds)
+      enable_cot: true  # Enable Chain of Thought reasoning
+      log_reasoning: false  # Log reasoning process for debugging
+    
+    # Output Configuration
+    output:
+      include_metadata: true  # Include metadata in structured output
+      validate_constraints: true  # Validate constraint values before output
+      defaults:
+        direction_constrain: 0.0  # Center direction (0.0), null for no constraint
+        velocity_constrain: 0.5  # Normal speed (0.5), null for no constraint
+        traversability_constrain: 0  # 0 (no constraint), 1 (traversable), 2 (non-traversable)
+    
+    # Conflict Resolution
+    conflict_resolution:
+      strategy: "online_priority"  # Strategy: online_priority, latest, merge
+      log_conflicts: true  # Enable conflict logging
+      max_constraints_per_object: 5  # Maximum number of constraints per object

@@ -1,0 +1,182 @@
+# Global Costmap Generation Parameters
+# =====================================
+# Converts FAST-LIO point cloud (/cloud_registered) to occupancy grid map
+# for Nav2 navigation. This node estimates ground height and filters points
+# by their height relative to the estimated ground surface.
+#
+# Author: Wang Junhui <wjh_9696@163.com>
+# Package: navibot_costmap
+# Node: geometric_traversability_costmap_node
+
+/**:
+  ros__parameters:
+    # ========================
+    # Map Resolution Settings
+    # ========================
+    
+    # Map resolution in meters per pixel
+    # Lower values = higher detail but more computation and memory usage
+    # Recommended range: 0.05 - 0.2 meters
+    resolution: 0.1
+    
+    # ========================
+    # Map Boundary Settings
+    # ========================
+    
+    # Margin around point cloud bounding box (meters)
+    # These margins extend the map beyond the actual point cloud bounds
+    # to provide space for robot navigation near the edges
+    margin_left: 10.0    # Extend map to the left (negative X)
+    margin_right: 10.0   # Extend map to the right (positive X)
+    margin_top: 10.0     # Extend map upward (positive Y)
+    margin_bottom: 10.0  # Extend map downward (negative Y)
+    
+    # ========================
+    # Occupancy Grid Settings
+    # ========================
+    
+    # Point count threshold for marking cells as occupied
+    # Cells with >= this many points are marked as obstacles (100 in occupancy grid)
+    # Lower values = more sensitive to sparse obstacles
+    # Higher values = ignore sparse noise but may miss thin obstacles
+    occupied_threshold: 2
+    
+    # Occupancy value for free space (cells without points)
+    # Standard values:
+    #   0  = free/navigable space
+    #   -1 = unknown space (not explored)
+    # Occupied cells are always set to 100 regardless of this value
+    free_space_value: 60
+    
+    # ========================
+    # Height Filtering Settings
+    # ========================
+    
+    # Height range relative to estimated ground surface (meters)
+    # Only points within [ground + min_z_offset, ground + max_z_offset] are considered obstacles
+    # This filters out both ground points and ceiling/high objects
+    
+    min_z_offset: 0.1  # Minimum height above ground (filters out ground/floor)
+    max_z_offset: 0.5  # Maximum height above ground (filters out ceiling/overhangs)
+
+    # ========================
+    # Ground Estimation Settings
+    # ========================
+    
+    # Coarse grid cell size for ground height estimation (meters)
+    # The map is divided into a coarse grid, and ground height is estimated per cell
+    # Larger values = smoother ground estimate but less detail
+    # Smaller values = more detailed but may be sensitive to noise
+    ground_grid_size: 1.0
+    
+    # Height threshold for ground candidate points (meters absolute Z value)
+    # Only points with Z <= this value are used for ground estimation
+    # This pre-filters obviously non-ground points (e.g., walls, furniture)
+    # Should be set slightly above expected ground height variations
+    ground_estimation_height_threshold: 0.5
+    
+    # ========================
+    # Coordinate Frame Settings
+    # ========================
+    
+    # Reference coordinate frame for fixed map boundaries
+    # Fixed boundaries (fixed_map_min_x/max_x/y) are defined in this frame.
+    # 
+    # Two modes of operation:
+    # 
+    # Mode 1: Static global map (target_frame_id = input point cloud frame)
+    #   - Example: target_frame_id = "map", input point cloud in "map"
+    #   - Boundaries are fixed in world coordinates
+    #   - Map does NOT move with robot
+    #   - Best for: Global navigation, pre-mapped environments
+    # 
+    # Mode 2: Robot-centric map (target_frame_id != input point cloud frame)
+    #   - Example: target_frame_id = "base_link", input point cloud in "map"
+    #   - Boundaries are defined relative to robot (e.g., ±20m around robot)
+    #   - Boundaries re-transformed every frame -> map follows robot
+    #   - Best for: Local navigation, moving robot perspective
+    # 
+    # Common values:
+    #   "map"       - Global/world frame (static map)
+    #   "base_link" - Robot frame (map follows robot)
+    #   "odom"      - Odometry frame
+    # 
+    # Note: Point clouds are NOT transformed, only boundaries are transformed if needed
+    target_frame_id: "base_link"
+    
+    # TF lookup timeout in seconds
+    # Maximum time to wait for transform availability between frames
+    # Increase if experiencing frequent transform failures
+    transform_timeout: 0.1
+    
+    # ========================
+    # ROS Topic Configuration
+    # ========================
+    
+    # Costmap publish rate in Hz
+    # Lower rates reduce CPU usage but decrease map update frequency
+    # Recommended: 0.1 - 1.0 Hz for static environments
+    #             1.0 - 5.0 Hz for dynamic environments
+    publish_rate: 5.0 # 2 seconds per update
+    
+    # ========================
+    # Input/Output Topics
+    # ========================
+    
+    # Input point cloud topic (typically from FAST-LIO)
+    input_topic: "/cloud_registered"
+    
+    # Output occupancy grid topic (consumed by Nav2)
+    # Using "/map" allows this node to replace traditional map_server
+    output_topic: "/costmap/geometric"
+    
+    # ========================
+    # Point Cloud Accumulation
+    # ========================
+    
+    # Enable multi-frame point cloud accumulation
+    # Useful for sparse/dynamic LiDAR data to build denser maps
+    # - false: Use only the latest single point cloud frame (faster, less memory)
+    # - true:  Accumulate multiple frames (denser map, more memory)
+    accumulation_mode: true
+    
+    # Frame interval for accumulation (frames)
+    # Accumulate every N frames (1 = accumulate every frame)
+    # Higher values reduce accumulation rate and memory usage
+    # Only used when accumulation_mode is true
+    accumulation_frame_interval: 2
+    
+    # Size of accumulation buffer (number of frames)
+    # Maximum number of accumulated frames to keep
+    # Older frames are discarded when buffer is full
+    # Memory usage: ~(accumulation_window_size × points_per_frame × 12 bytes)
+    # Only used when accumulation_mode is true
+    accumulation_window_size: 50
+    
+    # ========================
+    # Fixed Map Boundaries
+    # ========================
+    
+    # Use fixed map boundaries to prevent map jittering/jumping
+    # - true:  Map boundaries are fixed (stable map, recommended)
+    # - false: Map boundaries recalculated each frame (may cause visual jittering)
+    # When enabled, the map size and origin remain constant, preventing the
+    # visual "jumping" effect seen when the map boundaries change every frame
+    use_fixed_map: true
+    
+    # Allow map boundaries to expand (only used when use_fixed_map is true)
+    # - true:  Map can grow if new points exceed current boundaries
+    # - false: Map size fixed forever (may clip new points outside boundaries)
+    # Recommended: false for known environments, true for exploration
+    expand_map: false
+    
+    # Manually specify fixed map boundaries (meters, in target_frame_id)
+    # If all values are 0.0, boundaries will be auto-initialized from the first frame
+    # If any value is non-zero, these user-defined boundaries will be used
+    # Example for a 20m × 20m map centered at origin: [-10, 10, -10, 10]
+    # Only used when use_fixed_map is true
+    fixed_map_min_x: -20.0  # Minimum X boundary (left edge)
+    fixed_map_max_x: 20.0  # Maximum X boundary (right edge)
+    fixed_map_min_y: -20.0  # Minimum Y boundary (bottom edge)
+    fixed_map_max_y: 20.0  # Maximum Y boundary (top edge)
+

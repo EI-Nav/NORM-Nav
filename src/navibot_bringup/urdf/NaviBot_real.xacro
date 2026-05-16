@@ -1,0 +1,226 @@
+<?xml version="1.0"?>
+
+<robot name="NaviBot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:property name="length_wheel" value="0.05" />
+  <xacro:property name="radius_wheel" value="0.1" />
+  <xacro:property name="PI" value="3.1415926"/>
+  <xacro:macro name="default_inertial" params="mass">
+    <inertial>
+      <mass value="${mass}" />
+      <inertia ixx="0.01" ixy="0.0" ixz="0.0"
+                    iyy="0.01" iyz="0.0" izz="0.01" />
+    </inertial>
+  </xacro:macro>
+
+  <!-- base_link to lidar_link transform (hardcoded from measurement) -->
+  <xacro:property name="lidar_xyz" value="0.055 0.0 0.50" />
+  <xacro:property name="lidar_rpy" value="0.0 0.0 0.0" />
+  
+  <!-- LiDAR extrinsic w.r.t. IMU (from fastlio_mid360_real.yaml). -->
+  <xacro:property name="lidar_offset_xyz" value="-0.011 -0.02329 0.04412" />
+  <xacro:property name="lidar_offset_rpy" value="0.0 0.0 0.0" />
+  
+  <!-- lidar_link to camera_link transform (placeholder values) -->
+  <xacro:property name="camera_xyz" value="0.197 0.012 -0.110" />
+  <xacro:property name="camera_rpy" value="-0.019 0.048 0.004" />
+  
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <box size="0.72 .5 .1"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 -0.05"/>
+      <material name="white">
+        <color rgba="1 1 1 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <box size="0.72 .5 .1"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 -0.05"/>
+    </collision>
+    <xacro:default_inertial mass="8.2"/>
+  </link>
+
+  <link name="left_front_wheel_link">
+    <visual>
+      <geometry>
+        <cylinder length="${length_wheel}" radius="${radius_wheel}"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="black">
+        <color rgba="0 0 0 1"/>
+      </material>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="${length_wheel}" radius="${radius_wheel}"/>
+      </geometry>
+    </collision>
+    <mu1>0.5</mu1>
+    <mu2>0.5</mu2>
+    <xacro:default_inertial mass="0.5"/>
+  </link>
+
+  <link name="left_rear_wheel_link">
+    <visual>
+      <geometry>
+        <cylinder length="${length_wheel}" radius="${radius_wheel}"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="${length_wheel}" radius="${radius_wheel}"/>
+      </geometry>
+    </collision>
+    <mu1>0.5</mu1>
+    <mu2>0.5</mu2>
+    <xacro:default_inertial mass="0.5"/>
+  </link>
+
+  <link name="right_front_wheel_link">
+    <visual>
+      <geometry>
+        <cylinder length="${length_wheel}" radius="${radius_wheel}"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <material name="black"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="${length_wheel}" radius="${radius_wheel}"/>
+      </geometry>
+    </collision>
+    <mu1>0.5</mu1>
+    <mu2>0.5</mu2>
+    <xacro:default_inertial mass="0.5"/>
+  </link>
+
+  <link name="right_rear_wheel_link">
+    <visual>
+      <geometry>
+        <cylinder length="${length_wheel}" radius="${radius_wheel}"/>
+      </geometry>
+      <origin rpy="0 0 0" xyz="0 0 0" />
+      <material name="black"/>
+    </visual>
+    <collision>
+      <geometry>
+        <cylinder length="${length_wheel}" radius="${radius_wheel}"/>
+      </geometry>
+    </collision>
+    <mu1>0.5</mu1>
+    <mu2>0.5</mu2>
+    <xacro:default_inertial mass="0.5"/>
+  </link>
+
+  <joint name="base_to_left_front_wheel" type="fixed">
+    <parent link="base_link"/>
+    <child link="left_front_wheel_link"/>
+    <origin rpy="${-PI/2} 0 0" xyz="0.247 0.182 -0.245"/>
+    <axis xyz="0 0 1" />
+  </joint>
+
+  <joint name="base_to_left_rear_wheel" type="fixed">
+    <axis xyz="0 0 1" />
+    <anchor xyz="0 0 0" />
+    <limit effort="100" velocity="100" />
+    <parent link="base_link"/>
+    <child link="left_rear_wheel_link"/>
+    <origin rpy="${-PI/2} 0 0" xyz="-0.247 0.182 -0.245"/>
+  </joint>
+
+  <joint name="base_to_right_front_wheel" type="fixed">
+    <parent link="base_link"/>
+    <axis xyz="0 0 1" />
+    <child link="right_front_wheel_link"/>
+    <origin rpy="${-PI/2} 0 0" xyz="0.247 -0.182 -0.245"/>
+  </joint>
+  
+  <joint name="base_to_right_rear_wheel" type="fixed">
+    <parent link="base_link"/>
+    <axis xyz="0 0 1" />
+    <child link="right_rear_wheel_link"/>
+    <origin rpy="${-PI/2} 0 0" xyz="-0.247 -0.182 -0.245"/>
+  </joint>
+
+  <!-- IMU joint (co-located with Livox Mid360) -->
+  <joint name="imu_joint" type="fixed">
+    <axis xyz="0 1 0" />
+    <origin xyz="${lidar_xyz}" rpy="${lidar_rpy}"/>
+    <parent link="base_link"/>
+    <child link="imu_link"/>
+  </joint>
+
+  <!-- IMU link (co-located with Livox Mid360) -->
+  <link name="imu_link">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.05 0.05 0.05"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.05 0.05 0.05"/>
+      </geometry>
+      <material name="green">
+        <color rgba="0 1 0 1"/>
+      </material>
+    </visual>
+    <inertial>
+      <mass value="1e-2" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
+
+  <!-- Livox Mid360 LiDAR -->
+  <joint name="lidar_joint" type="fixed">
+    <origin xyz="${lidar_offset_xyz}" rpy="${lidar_offset_rpy}" />
+    <parent link="imu_link"/>
+    <child link="lidar_link"/>
+  </joint>
+
+  <link name="lidar_link">
+    <visual>
+      <origin xyz="0.025 -0.0265 -0.025" rpy="${PI/2} 0 ${PI}"/>
+      <geometry>
+        <mesh filename="package://navibot_simulation/meshes/mid360.stl" scale="0.001 0.001 0.001"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0 0 1.0 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder length="0.05" radius="0.04"/>
+      </geometry>
+    </collision>
+    <xacro:default_inertial mass="0.3"/>
+  </link>
+
+  <!-- Camera joint (from lidar_link to camera_link) -->
+  <joint name="camera_joint" type="fixed">
+    <origin xyz="${camera_xyz}" rpy="${camera_rpy}" />
+    <parent link="lidar_link"/>
+    <child link="camera_link"/>
+  </joint>
+
+  <!-- Camera link -->
+  <link name="camera_link">
+    <inertial>
+      <mass value="0.1" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
+
+</robot>
+

@@ -1,0 +1,106 @@
+# ROS2 Development Rules
+
+## General Guidelines
+- Always follow official ROS2 coding standards and best practices
+- Use ament_cmake as build system and colcon as build tool
+- Prioritize rclcpp and rclpy for C++ and Python development
+- Ensure code readability and maintainability
+
+## Package Structure Standards
+- Every ROS2 package must include package.xml and CMakeLists.txt (C++) or setup.py (Python)
+- Source files go in src/ directory
+- Header files go in include/package_name/ directory
+- Launch files go in launch/ directory
+- Configuration files go in config/ directory
+- URDF/Xacro files go in urdf/ directory
+
+## C++ Coding Standards
+- Use modern C++ standards (C++17 or higher)
+- Class names use PascalCase, functions and variables use snake_case
+- All ROS2 nodes should inherit from rclcpp::Node
+- Use smart pointers for memory management, avoid raw pointers
+- Initialize all ROS2 objects (publishers, subscribers, services) in constructor
+- Use rclcpp::spin() or executors to manage node lifecycle
+
+## Python Coding Standards
+- Follow PEP 8 coding style
+- Class names use PascalCase, functions and variables use snake_case
+- All ROS2 nodes should inherit from rclpy.node.Node
+- Initialize all ROS2 objects in __init__ method
+- Use rclpy.spin() to manage node lifecycle
+- Properly handle node shutdown and resource cleanup
+
+## Message and Service Design
+- Message definition files go in msg/ directory with .msg extension
+- Service definition files go in srv/ directory with .srv extension
+- Action definition files go in action/ directory with .action extension
+- Field names use snake_case
+- Add clear comments explaining message purpose
+
+## Topic and Service Naming
+- Use descriptive names in snake_case format
+- Avoid abbreviations unless widely known
+- Private topics use ~/ prefix
+- Global topics use / prefix cautiously
+- Service names should clearly express their functionality
+
+## Launch File Standards
+- Use Python launch files (.launch.py)
+- Import necessary launch modules: LaunchDescription, Node, etc.
+- Use parameterized configuration, avoid hardcoding
+- Add appropriate comments and documentation
+- Support parameter-based node configuration
+
+## Parameter Management
+- Use ROS2 parameter system for configuration management
+- Declare all parameters in node constructor
+- Provide reasonable default values
+- Support parameter validation and range checking
+- Parameter names use snake_case
+
+## Error Handling and Logging
+- Use ROS2 logging system: RCLCPP_INFO, RCLCPP_WARN, RCLCPP_ERROR, etc.
+- For Python use: self.get_logger().info(), warn(), error(), etc.
+- Use appropriate log levels reasonably
+- Add error checking at critical operations
+- Provide meaningful error messages
+
+## CMakeLists.txt Best Practices
+- Specify appropriate CMAKE_MINIMUM_REQUIRED version
+- Use find_package to find all dependencies
+- Configure ament_target_dependencies correctly
+- Use install() commands to install all necessary files
+- Add appropriate compilation options and warnings
+
+## Testing Standards
+- Write unit tests for all nodes
+- Use gtest (C++) or pytest (Python)
+- Test files go in test/ directory
+- Configure test targets in CMakeLists.txt
+- Ensure tests can run independently
+
+## Documentation and Comments
+- Add documentation comments for all public interfaces
+- Use Doxygen format (C++) or docstrings (Python)
+- README.md should include package purpose, dependencies, and usage
+- Add inline comments for complex algorithms and business logic
+
+## Dependency Management
+- Correctly declare all dependencies in package.xml
+- Distinguish between build_depend, exec_depend, and test_depend
+- Avoid unnecessary dependencies
+- Use rosdep for system dependency management
+
+## Code Quality
+- Use static analysis tools to check code quality
+- Perform regular code refactoring
+- Follow DRY (Don't Repeat Yourself) principle
+- Maintain single responsibility for functions and classes
+
+## Performance Considerations
+- Avoid time-consuming operations in callback functions
+- Set appropriate queue depths and QoS configurations
+- Use appropriate timer frequencies
+- Consider memory usage and CPU consumption
+
+When writing ROS2 code, please follow the above rules to ensure code quality, maintainability, and good compatibility with the ROS2 ecosystem.

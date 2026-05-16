@@ -1,0 +1,102 @@
+# Costmap Fusion Parameters
+# =========================
+# Fuses three costmap layers (geometric, semantic, directional) into unified navigation costmap.
+# Supports multiple fusion modes and matrix-based operations.
+#
+# Author: Wang Junhui <wjh_9696@163.com>
+# Package: navibot_costmap
+# Node: costmap_fusion_node
+
+/**:
+  ros__parameters:
+    # ========================
+    # Input/Output Configuration
+    # ========================
+    
+    # Input topics for three costmap layers
+    geometric_topic: "/costmap/geometric"
+    semantic_topic: "/costmap/semantic"
+    directional_topic: "/costmap/directional"
+    
+    # Output topic for fused costmap
+    output_topic: "/map"
+    
+    # ========================
+    # Fusion Mode Configuration
+    # ========================
+    
+    # Fusion mode: fixed_rate / triggered / hybrid
+    # - fixed_rate: Fuse at fixed frequency regardless of input updates
+    # - triggered: Fuse only when any input layer updates
+    # - hybrid: Combine fixed rate with triggered updates
+    fusion_mode: "hybrid"
+    
+    # Fixed rate for fusion in Hz (used in fixed_rate and hybrid modes)
+    fixed_rate: 5.0
+    
+    # Trigger fusion on specific layer updates (used in triggered and hybrid modes)
+    trigger_on_geometric: true
+    trigger_on_semantic: true
+    trigger_on_directional: true
+    
+    # ========================
+    # Fusion Algorithm Configuration
+    # ========================
+    
+    # Fusion algorithm: spatial_behavioral (other algorithms removed)
+    # - spatial_behavioral: Spatial behavioral fusion using formulas (16) and (17)
+    # Note: Only spatial_behavioral fusion is currently supported
+    fusion_algorithm: "spatial_behavioral"
+    
+    # ========================
+    # Spatial Behavioral Fusion Parameters
+    # ========================
+    
+    # Penalty values for semantic traversability fusion (used in spatial_behavioral mode)
+    # These correspond to the constants in formulas (16) and (17)
+    semantic_penalty_low: 20
+    semantic_penalty_high: 100
+    
+    # ========================
+    # Map Alignment Configuration
+    # ========================
+    
+    # Reference layer for alignment (geometric/semantic/directional)
+    # The selected layer will be used as the coordinate system
+    # for aligning the other two layers
+    reference_layer: "geometric"
+    
+    
+    # Warn when costmaps need alignment (different resolutions/origins)
+    # Set to false to suppress alignment warnings
+    warn_on_misalignment: true
+    
+    # ========================
+    # Performance Configuration
+    # ========================
+    
+    # Enable detailed debug logging
+    enable_debug_logging: false
+    
+    # Timeout threshold in seconds for waiting for all layers
+    timeout_threshold: 5.0
+    
+    # ========================
+    # Performance Optimization
+    # ========================
+    
+    # Enable resampling cache for coordinate mapping reuse
+    # Significantly improves performance when resampling same coordinate systems
+    enable_resampling_cache: true
+    
+    # Maximum number of cached resampling mappings
+    # Higher values use more memory but provide better cache hit rates
+    max_cache_entries: 10
+    
+    # Enable detailed timing breakdown (alignment vs fusion algorithm)
+    # Useful for performance profiling and optimization
+    enable_detailed_timing: false
+    
+    # Enable timing statistics for fusion operations
+    # Useful for performance monitoring and optimization
+    enable_timing_stats: true

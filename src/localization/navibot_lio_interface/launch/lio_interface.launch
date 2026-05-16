@@ -1,0 +1,12 @@
+<launch>
+
+  <node pkg="navibot_lio_interface" exec="lioInterface" name="lioInterface" output="screen">
+    <param name="stateEstimationTopic" value="/Odometry" />
+    <param name="registeredScanTopic" value="/cloud_registered" />
+    <param name="flipStateEstimation" value="false" />
+    <param name="flipRegisteredScan" value="false" />
+    <param name="sendTF" value="true" />
+    <param name="reverseTF" value="false" />
+  </node>
+
+</launch>
