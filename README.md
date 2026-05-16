@@ -1,8 +1,17 @@
 # NORM-Nav
 
-[Paper PDF](ICRA26_2253_FI.pdf) · [Project Website](https://ei-nav.github.io/NORM-Nav) · [Citation](#paper-and-citation) · [License](LICENSE)
+<p align="center">
+  <a href="ICRA26_2253_FI.pdf">Paper PDF</a> ·
+  <a href="https://ei-nav.github.io/NORM-Nav">Project Website</a> ·
+  <a href="#paper-and-citation">Citation</a> ·
+</p>
 
-
+<p align="center">
+  <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License: MIT" />
+  <img src="https://img.shields.io/badge/ROS%202-Humble-22314E.svg" alt="ROS 2 Humble" />
+  <img src="https://img.shields.io/badge/Ubuntu-22.04-E95420.svg" alt="Ubuntu 22.04" />
+  <img src="https://img.shields.io/badge/Gazebo-Classic%2011-FF6F00.svg" alt="Gazebo Classic 11" />
+</p>
 
 ---
 
@@ -280,9 +289,3 @@ This work builds on excellent open-source projects, including:
 - [light-map-navigation](https://github.com/EI-Nav/light-map-navigation)
 - [FAST-LIO2](https://github.com/hku-mars/FAST_LIO)
 - [Grounded SAM / SAM2 ecosystem](https://github.com/IDEA-Research/Grounded-SAM-2)
-
----
-
-## License
-
-The **root** project is released under the [MIT License](LICENSE). Third-party and submodule components remain under their respective licenses.
