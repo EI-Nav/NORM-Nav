@@ -3,7 +3,7 @@
 <p align="center">
   <a href="ICRA26_2253_FI.pdf">Paper PDF</a> ·
   <a href="https://ei-nav.github.io/NORM-Nav">Project Website</a> ·
-  <a href="#paper-and-citation">Citation</a> ·
+  <a href="#paper-and-citation">Citation</a>
 </p>
 
 <p align="center">
@@ -21,6 +21,7 @@
 - [Key Features](#key-features)
 - [System Architecture](#system-architecture)
 - [Repository Layout](#repository-layout)
+- [Package documentation](#package-documentation)
 - [Requirements](#requirements)
 - [Installation](#installation)
 - [Quick Start](#quick-start)
@@ -127,6 +128,25 @@ NORM-Nav/
 │       └── waypoint_rviz_plugin/
 ```
 
+### Package documentation
+
+**Perception & behavior**
+
+- [Grounded SAM2](src/perception/navibot_grounded_sam2/README.md) — GroundingDINO + SAM2 perception and conda environment
+- [Costmap](src/perception/navibot_costmap/README.md) — geometric, semantic, directional, and velocity costmap layers
+- [Pointcloud to Laserscan](src/perception/navibot_pointcloud_to_laserscan/README.md) — 3D point cloud to 2D laser scan
+- [Instruction Parsing](src/human_robot_interaction/navibot_instruction_parsing/README.md) — natural-language instruction parsing and ROS interfaces
+
+**Localization, simulation & sensors**
+
+- [FAST-LIO](src/localization/FAST_LIO/README.md) — localization submodule (git submodule)
+- [Livox Laser Simulation](src/simulation/livox_laser_simulation_RO2/README.md) — Livox simulation in Gazebo
+- [Livox ROS Driver](src/sensors/livox_ros_driver2/README.md) — MID-360 driver for real hardware
+
+**Interfaces**
+
+- [navibot_interfaces](src/utilities/navibot_interfaces/README.md) — custom msg/srv definitions
+
 ---
 
 ## Installation
@@ -170,8 +190,10 @@ source install/setup.bash
 
 Follow package docs for conda/PyTorch and Grounded SAM2 setup:
 
-- `[src/perception/navibot_grounded_sam2/README.md](src/perception/navibot_grounded_sam2/README.md)`
-- `[src/human_robot_interaction/navibot_instruction_parsing/README.md](src/human_robot_interaction/navibot_instruction_parsing/README.md)`
+- [Grounded SAM2](src/perception/navibot_grounded_sam2/README.md)
+- [Instruction Parsing](src/human_robot_interaction/navibot_instruction_parsing/README.md)
+
+See [Package documentation](#package-documentation) for all package READMEs.
 
 ---
 
@@ -246,9 +268,9 @@ ros2 topic pub --once /behavioral_instructions navibot_interfaces/msg/Behavioral
 
 ---
 
-Full ROS 2 topics, services, and parameters: `[src/human_robot_interaction/navibot_instruction_parsing/README.md](src/human_robot_interaction/navibot_instruction_parsing/README.md)`.
+Full ROS 2 topics, services, and parameters: see [Instruction Parsing](src/human_robot_interaction/navibot_instruction_parsing/README.md).
 
-Message definitions: `[src/utilities/navibot_interfaces/README.md](src/utilities/navibot_interfaces/README.md)`.
+Message definitions: see [navibot_interfaces](src/utilities/navibot_interfaces/README.md).
 
 ---
 
@@ -277,7 +299,7 @@ arXiv preprint: coming soon
 
 ## Contributing
 
-Contributions are welcome via **GitHub Issues** and **pull requests**.
+Contributions are welcome via **[GitHub Issues](https://github.com/EI-Nav/NORM-Nav/issues)** and **[pull requests](https://github.com/EI-Nav/NORM-Nav/compare)**.
 
 ---
 
