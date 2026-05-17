@@ -128,27 +128,6 @@ NORM-Nav/
 │       └── waypoint_rviz_plugin/
 ```
 
-### Package documentation
-
-**Perception & behavior**
-
-- [Grounded SAM2](src/perception/navibot_grounded_sam2/README.md) — GroundingDINO + SAM2 perception and conda environment
-- [Costmap](src/perception/navibot_costmap/README.md) — geometric, semantic, directional, and velocity costmap layers
-- [Pointcloud to Laserscan](src/perception/navibot_pointcloud_to_laserscan/README.md) — 3D point cloud to 2D laser scan
-- [Instruction Parsing](src/human_robot_interaction/navibot_instruction_parsing/README.md) — natural-language instruction parsing and ROS interfaces
-
-**Localization, simulation & sensors**
-
-- [FAST-LIO](src/localization/FAST_LIO/README.md) — localization submodule (git submodule)
-- [Livox Laser Simulation](src/simulation/livox_laser_simulation_RO2/README.md) — Livox simulation in Gazebo
-- [Livox ROS Driver](src/sensors/livox_ros_driver2/README.md) — MID-360 driver for real hardware
-
-**Interfaces**
-
-- [navibot_interfaces](src/utilities/navibot_interfaces/README.md) — custom msg/srv definitions
-
----
-
 ## Installation
 
 ### 1. Clone and submodules
@@ -192,8 +171,6 @@ Follow package docs for conda/PyTorch and Grounded SAM2 setup:
 
 - [Grounded SAM2](src/perception/navibot_grounded_sam2/README.md)
 - [Instruction Parsing](src/human_robot_interaction/navibot_instruction_parsing/README.md)
-
-See [Package documentation](#package-documentation) for all package READMEs.
 
 ---
 
