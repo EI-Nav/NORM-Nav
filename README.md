@@ -260,11 +260,13 @@ Message definitions: see [navibot_interfaces](src/utilities/navibot_interfaces/R
 **arXiv:** [2605.16979](https://arxiv.org/abs/2605.16979)
 
 ```bibtex
-@ARTICLE{huo2026normnav,
-  author  = {D.~Huo and J.~Wang and C.~Gao and Y.~Qiao and D.~Zhang and G.~Zhou},
-  journal = {arXiv preprint arXiv:2605.16979},
-  title   = {{NORM-Nav}: Zero-Shot Mobile Robot Navigation With Natural Language Behavioral Constraints},
-  year    = {2026},
+@misc{huo2026normnav,
+  title={NORM-Nav: Zero-Shot Mobile Robot Navigation with Natural Language Behavioral Constraints},
+  author={Dongjie Huo and Junhui Wang and Chao Gao and Yan Qiao and Dong Zhang and Guyue Zhou},
+  year={2026},
+  eprint={2605.16979},
+  archivePrefix={arXiv},
+  primaryClass={cs.RO}
 }
 ```
 
