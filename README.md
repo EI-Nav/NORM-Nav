@@ -1,7 +1,7 @@
 # NORM-Nav
 
 <p align="center">
-  <a href="ICRA26_2253_FI.pdf">Paper PDF</a> ·
+  <a href="https://arxiv.org/abs/2605.16979">arXiv</a> ·
   <a href="https://ei-nav.github.io/NORM-Nav">Project Website</a> ·
   <a href="#paper-and-citation">Citation</a>
 </p>
@@ -257,18 +257,14 @@ Message definitions: see [navibot_interfaces](src/utilities/navibot_interfaces/R
 
 **Project website:** [https://ei-nav.github.io/NORM-Nav](https://ei-nav.github.io/NORM-Nav)
 
-arXiv preprint: coming soon
+**arXiv:** [2605.16979](https://arxiv.org/abs/2605.16979)
 
 ```bibtex
-@inproceedings{huo2026norm_nav,
-  title     = {NORM-Nav: Zero-Shot Mobile Robot Navigation with Natural Language Behavioral Constraints},
-  author    = {TBA},
-  booktitle = {IEEE International Conference on Robotics and Automation (ICRA)},
-  year      = {2026},
-  note      = {To appear / under review},
-  eprint    = {TBA},
-  archivePrefix = {arXiv},
-  primaryClass = {cs.RO}
+@ARTICLE{huo2026normnav,
+  author  = {D.~Huo and J.~Wang and C.~Gao and Y.~Qiao and D.~Zhang and G.~Zhou},
+  journal = {arXiv preprint arXiv:2605.16979},
+  title   = {{NORM-Nav}: Zero-Shot Mobile Robot Navigation With Natural Language Behavioral Constraints},
+  year    = {2026},
 }
 ```
 
